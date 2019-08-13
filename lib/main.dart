@@ -1,17 +1,26 @@
 import 'package:billsmanager/models/DrawerItem.dart';
+import 'package:billsmanager/pages/Settings.dart';
 import 'package:flutter/material.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
 
 void main() => runApp(App());
 
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Bills Manager',
-      theme: ThemeData(
+    return DynamicTheme(
+      defaultBrightness: Brightness.light,
+      data: (brightness) => ThemeData(
         primarySwatch: Colors.blue,
+        brightness: brightness,
       ),
-      home: LandingPage(title: 'Bills Manager'),
+      themedWidgetBuilder: (context, theme) {
+        return MaterialApp(
+          title: 'Bills Manager',
+          theme: theme,
+          home: LandingPage(title: 'Bills Manager'),
+        );
+      },
     );
   }
 }
@@ -29,7 +38,6 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-
   @override
   void initState() {
     super.initState();
@@ -42,17 +50,37 @@ class _LandingPageState extends State<LandingPage> {
         title: Text(widget.title),
       ),
       drawer: Drawer(
-        child: ListView(
+        child: Column(
           children: <Widget>[
             DrawerHeader(
-              child: Text("Bills Manager"),
+              // decoration: BoxDecoration(
+              //   color: Theme.of(context).primaryColor,
+              // ),
+              margin: EdgeInsets.zero,
+              child: Center(
+                child: Text("Bills Manager"),
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.settings),
+                    title: Text("Settings"),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => new SettingsPage()),
+                    ),
+                  ),
+                ],
+              ),
             )
           ],
         ),
       ),
-      body: Center(
-        
-      ),
+      body: Center(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {},
         tooltip: 'Increment',
