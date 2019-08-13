@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Wrapper class for rebuilding the whole widget tree
 class AppBuilder extends StatefulWidget {
   const AppBuilder({Key key, this.builder}) : super(key: key);
   final Function(BuildContext) builder;
