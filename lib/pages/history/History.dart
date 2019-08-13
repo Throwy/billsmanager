@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class HistoryPage extends StatefulWidget {
-  _HistoryPageState createState() => new _HistoryPageState();
+  HistoryPageState createState() => new HistoryPageState();
 }
 
-class _HistoryPageState extends State<HistoryPage> {
+class HistoryPageState extends State<HistoryPage> {
   @override
   void initState() {
     super.initState();

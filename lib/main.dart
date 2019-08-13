@@ -1,3 +1,4 @@
+import 'package:billsmanager/helpers/AppBuilder.dart';
 import 'package:billsmanager/models/DrawerItem.dart';
 import 'package:billsmanager/pages/history/History.dart';
 import 'package:billsmanager/pages/settings/Settings.dart';
@@ -9,17 +10,21 @@ void main() => runApp(App());
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return DynamicTheme(
-      defaultBrightness: Brightness.light,
-      data: (brightness) => ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: brightness,
-      ),
-      themedWidgetBuilder: (context, theme) {
-        return MaterialApp(
-          title: 'Bills Manager',
-          theme: theme,
-          home: LandingPage(title: 'Bills Manager'),
+    return AppBuilder(
+      builder: (BuildContext context) {
+        return DynamicTheme(
+          defaultBrightness: Brightness.light,
+          data: (brightness) => ThemeData(
+            primarySwatch: Colors.blue,
+            brightness: brightness,
+          ),
+          themedWidgetBuilder: (context, theme) {
+            return MaterialApp(
+              title: 'Bills Manager',
+              theme: theme,
+              home: LandingPage(title: 'Bills Manager'),
+            );
+          },
         );
       },
     );
@@ -31,10 +36,10 @@ class LandingPage extends StatefulWidget {
   final String title;
 
   @override
-  _LandingPageState createState() => _LandingPageState();
+  LandingPageState createState() => LandingPageState();
 }
 
-class _LandingPageState extends State<LandingPage> {
+class LandingPageState extends State<LandingPage> {
   final List<DrawerItem> _drawerItems = [
     new DrawerItem("History", Icons.history, HistoryPage()),
     new DrawerItem("Settings", Icons.settings, SettingsPage())
@@ -72,9 +77,7 @@ class _LandingPageState extends State<LandingPage> {
                     title: Text(item.title),
                     onTap: () => Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => item.widget
-                      ),
+                      MaterialPageRoute(builder: (context) => item.widget),
                     ),
                   );
                 }).toList(),
