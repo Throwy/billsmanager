@@ -1,5 +1,6 @@
 import 'package:billsmanager/models/DrawerItem.dart';
-import 'package:billsmanager/pages/Settings.dart';
+import 'package:billsmanager/pages/history/History.dart';
+import 'package:billsmanager/pages/settings/Settings.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 
@@ -29,15 +30,16 @@ class LandingPage extends StatefulWidget {
   LandingPage({Key key, this.title}) : super(key: key);
   final String title;
 
-  final List<DrawerItem> drawerItems = [
-    new DrawerItem("Bills", Icons.monetization_on, Center())
-  ];
-
   @override
   _LandingPageState createState() => _LandingPageState();
 }
 
 class _LandingPageState extends State<LandingPage> {
+  final List<DrawerItem> _drawerItems = [
+    new DrawerItem("History", Icons.history, HistoryPage()),
+    new DrawerItem("Settings", Icons.settings, SettingsPage())
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -64,17 +66,18 @@ class _LandingPageState extends State<LandingPage> {
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text("Settings"),
+                children: _drawerItems.map<ListTile>((DrawerItem item) {
+                  return ListTile(
+                    leading: Icon(item.icon),
+                    title: Text(item.title),
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => new SettingsPage()),
+                        builder: (context) => item.widget
+                      ),
                     ),
-                  ),
-                ],
+                  );
+                }).toList(),
               ),
             )
           ],
@@ -83,7 +86,7 @@ class _LandingPageState extends State<LandingPage> {
       body: Center(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {},
-        tooltip: 'Increment',
+        tooltip: 'Create Entry',
         child: Icon(Icons.add),
       ),
     );
