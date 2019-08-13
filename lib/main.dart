@@ -1,7 +1,8 @@
 import 'package:billsmanager/helpers/AppBuilder.dart';
 import 'package:billsmanager/models/DrawerItem.dart';
-import 'package:billsmanager/pages/history/History.dart';
-import 'package:billsmanager/pages/settings/Settings.dart';
+import 'package:billsmanager/pages/entryforms/CreateBillPage.dart';
+import 'package:billsmanager/pages/history/HistoryPage.dart';
+import 'package:billsmanager/pages/settings/SettingsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 
@@ -77,7 +78,9 @@ class LandingPageState extends State<LandingPage> {
                     title: Text(item.title),
                     onTap: () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => item.widget),
+                      MaterialPageRoute(
+                        builder: (context) => item.widget,
+                      ),
                     ),
                   );
                 }).toList(),
@@ -88,7 +91,32 @@ class LandingPageState extends State<LandingPage> {
       ),
       body: Center(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: () => {
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.attach_money),
+                    title: Text("Add Bill"),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CreateBillPage(),
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.payment),
+                    title: Text("Add Payment"),
+                  ),
+                ],
+              );
+            },
+          )
+        },
         tooltip: 'Create Entry',
         child: Icon(Icons.add),
       ),
