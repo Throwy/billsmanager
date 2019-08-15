@@ -1,5 +1,4 @@
 import 'package:billsmanager/helpers/AppBuilder.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 
 class ThemeSettingsPage extends StatefulWidget {
@@ -21,7 +20,6 @@ class ThemeSettingsState extends State<ThemeSettingsPage> {
   void changeTheme(Brightness brightness) {
     setState(() {
       _brightness = brightness;
-      DynamicTheme.of(context).setBrightness(brightness);
       AppBuilder.of(context).rebuild();
     });
   }

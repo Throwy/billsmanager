@@ -4,7 +4,6 @@ import 'package:billsmanager/pages/entryforms/CreateBillPage.dart';
 import 'package:billsmanager/pages/history/HistoryPage.dart';
 import 'package:billsmanager/pages/settings/SettingsPage.dart';
 import 'package:flutter/material.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
 
 void main() => runApp(App());
 
@@ -13,19 +12,13 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBuilder(
       builder: (BuildContext context) {
-        return DynamicTheme(
-          defaultBrightness: Brightness.light,
-          data: (brightness) => ThemeData(
+        return MaterialApp(
+          title: 'Bills Manager',
+          theme: new ThemeData(
             primarySwatch: Colors.blue,
-            brightness: brightness,
+            brightness: Brightness.dark,
           ),
-          themedWidgetBuilder: (context, theme) {
-            return MaterialApp(
-              title: 'Bills Manager',
-              theme: theme,
-              home: LandingPage(title: 'Bills Manager'),
-            );
-          },
+          home: LandingPage(title: 'Bills Manager'),
         );
       },
     );
