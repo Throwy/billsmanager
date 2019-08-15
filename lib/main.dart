@@ -5,10 +5,12 @@ import 'package:billsmanager/pages/settings/SettingsPage.dart';
 import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
   runApp(App(
-    state: AppState(),
+    state: AppState(preferences: preferences),
   ));
 }
 

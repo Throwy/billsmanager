@@ -19,7 +19,6 @@ class ThemeSettingsState extends State<ThemeSettingsPage> {
       body: ListView(
         children: <Widget>[
           ScopedModelDescendant<AppState>(
-            rebuildOnChange: true,
             builder: (context, child, model) {
               return RadioListTile(
                 title: Text("Light"),
@@ -32,7 +31,6 @@ class ThemeSettingsState extends State<ThemeSettingsPage> {
             },
           ),
           ScopedModelDescendant<AppState>(
-            rebuildOnChange: true,
             builder: (context, child, model) {
               return RadioListTile(
                 title: Text("Dark"),
