@@ -5,9 +5,13 @@ import 'package:billsmanager/pages/history/HistoryPage.dart';
 import 'package:billsmanager/pages/settings/SettingsPage.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(App());
+void main() {
+  runApp(App());
+}
 
 class App extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return AppBuilder(
