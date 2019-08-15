@@ -10,8 +10,6 @@ void main() {
 }
 
 class App extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return AppBuilder(
@@ -88,32 +86,30 @@ class LandingPageState extends State<LandingPage> {
       ),
       body: Center(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-          showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.attach_money),
-                    title: Text("Add Bill"),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CreateBillPage(),
-                      ),
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.attach_money),
+                  title: Text("Add Bill"),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateBillPage(),
                     ),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.payment),
-                    title: Text("Add Payment"),
-                  ),
-                ],
-              );
-            },
-          )
-        },
+                ),
+                ListTile(
+                  leading: Icon(Icons.payment),
+                  title: Text("Add Payment"),
+                ),
+              ],
+            );
+          },
+        ),
         tooltip: 'Create Entry',
         child: Icon(Icons.add),
       ),
