@@ -1,4 +1,3 @@
-import 'package:billsmanager/helpers/AppBuilder.dart';
 import 'package:billsmanager/models/DrawerItem.dart';
 import 'package:billsmanager/pages/entryforms/CreateBillPage.dart';
 import 'package:billsmanager/pages/history/HistoryPage.dart';
@@ -20,20 +19,20 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBuilder(
-      builder: (BuildContext context) {
-        return ScopedModel<AppState>(
-          model: state,
-          child: MaterialApp(
+    return ScopedModel<AppState>(
+      model: state,
+      child: ScopedModelDescendant<AppState>(
+        builder: (context, child, model) {
+          return MaterialApp(
             title: 'Bills Manager',
             theme: ThemeData(
               primarySwatch: Colors.blue,
-              brightness: state.brightness,
+              brightness: model.brightness,
             ),
             home: LandingPage(title: 'Bills Manager'),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

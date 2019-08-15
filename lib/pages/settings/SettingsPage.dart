@@ -17,24 +17,22 @@ class SettingsPageState extends State<SettingsPage> {
         title: Text("Settings"),
       ),
       body: ListView(
-        children: _settingsItems.map<ListTile>((title) {
-          return ListTile(
-            title: Text(
-              title,
-              style: _style,
-            ),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => ThemeSettingsPage(
-                  title: title,
-                  brightness: Theme.of(context).brightness,
-                ),
+          children: _settingsItems.map<ListTile>((title) {
+        return ListTile(
+          title: Text(
+            title,
+            style: _style,
+          ),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => ThemeSettingsPage(
+                title: title,
               ),
             ),
-          );
-        }).toList()        
-      ),
+          ),
+        );
+      }).toList()),
     );
   }
 }

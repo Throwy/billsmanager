@@ -10,4 +10,7 @@ class AppState extends Model {
     _brightness = brightness;
     notifyListeners();
   }
+
+  static AppState of(BuildContext context) =>
+    ScopedModel.of<AppState>(context);
 }
