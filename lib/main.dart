@@ -3,24 +3,35 @@ import 'package:billsmanager/models/DrawerItem.dart';
 import 'package:billsmanager/pages/entryforms/CreateBillPage.dart';
 import 'package:billsmanager/pages/history/HistoryPage.dart';
 import 'package:billsmanager/pages/settings/SettingsPage.dart';
+import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 void main() {
-  runApp(App());
+  runApp(App(
+    state: AppState(),
+  ));
 }
 
 class App extends StatelessWidget {
+  final AppState state;
+
+  const App({Key key, @required this.state}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return AppBuilder(
       builder: (BuildContext context) {
-        return MaterialApp(
-          title: 'Bills Manager',
-          theme: new ThemeData(
-            primarySwatch: Colors.blue,
-            brightness: Brightness.dark,
+        return ScopedModel<AppState>(
+          model: state,
+          child: MaterialApp(
+            title: 'Bills Manager',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              brightness: state.brightness,
+            ),
+            home: LandingPage(title: 'Bills Manager'),
           ),
-          home: LandingPage(title: 'Bills Manager'),
         );
       },
     );
@@ -41,9 +52,24 @@ class LandingPageState extends State<LandingPage> {
     new DrawerItem("Settings", Icons.settings, SettingsPage())
   ];
 
+  List<ListTile> _drawerTiles;
+
   @override
   void initState() {
     super.initState();
+
+    _drawerTiles = _drawerItems.map<ListTile>((DrawerItem item) {
+      return ListTile(
+        leading: Icon(item.icon),
+        title: Text(item.title),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => item.widget,
+          ),
+        ),
+      );
+    }).toList();
   }
 
   @override
@@ -67,18 +93,7 @@ class LandingPageState extends State<LandingPage> {
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
-                children: _drawerItems.map<ListTile>((DrawerItem item) {
-                  return ListTile(
-                    leading: Icon(item.icon),
-                    title: Text(item.title),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => item.widget,
-                      ),
-                    ),
-                  );
-                }).toList(),
+                children: _drawerTiles,
               ),
             )
           ],

@@ -11,11 +11,6 @@ class SettingsPageState extends State<SettingsPage> {
   List<String> _settingsItems = ["Theme"];
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -33,6 +28,7 @@ class SettingsPageState extends State<SettingsPage> {
               MaterialPageRoute(
                 builder: (BuildContext context) => ThemeSettingsPage(
                   title: title,
+                  brightness: Theme.of(context).brightness,
                 ),
               ),
             ),
