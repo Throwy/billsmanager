@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ThemeSettingsPage extends StatefulWidget {
-  ThemeSettingsPage({Key key, @required this.title}) : super(key: key);
-  final String title;
-
   ThemeSettingsState createState() => new ThemeSettingsState();
 }
 
@@ -14,15 +11,15 @@ class ThemeSettingsState extends State<ThemeSettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Theme"),
       ),
       body: ListView(
         children: <Widget>[
           ScopedModelDescendant<AppState>(
             builder: (context, child, model) {
               return RadioListTile(
-                title: Text("Light"),
-                value: Brightness.light,
+                title: Text("Dark"),
+                value: Brightness.dark,
                 groupValue: model.brightness,
                 onChanged: (value) {
                   model.changeBrightness(value);
@@ -33,8 +30,8 @@ class ThemeSettingsState extends State<ThemeSettingsPage> {
           ScopedModelDescendant<AppState>(
             builder: (context, child, model) {
               return RadioListTile(
-                title: Text("Dark"),
-                value: Brightness.dark,
+                title: Text("Light"),
+                value: Brightness.light,
                 groupValue: model.brightness,
                 onChanged: (value) {
                   model.changeBrightness(value);

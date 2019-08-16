@@ -1,3 +1,4 @@
+import 'package:billsmanager/models/SettingsItem.dart';
 import 'package:billsmanager/pages/settings/ThemeSettingsPage.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,9 @@ class SettingsPage extends StatefulWidget {
 class SettingsPageState extends State<SettingsPage> {
   TextStyle _style = TextStyle(fontSize: 22.0);
 
-  List<String> _settingsItems = ["Theme"];
+  List<SettingsItem> _settingsItems = [
+    new SettingsItem("Theme", new ThemeSettingsPage())
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -16,23 +19,26 @@ class SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         title: Text("Settings"),
       ),
-      body: ListView(
-          children: _settingsItems.map<ListTile>((title) {
-        return ListTile(
-          title: Text(
-            title,
-            style: _style,
-          ),
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => ThemeSettingsPage(
-                title: title,
+      body: ListView.builder(
+        itemCount: _settingsItems.length,
+        itemBuilder: (context, i) {
+          if (i.isOdd) return Divider();
+
+          final index = i ~/ 2;
+          return ListTile(
+            title: Text(
+              _settingsItems[index].title,
+              style: _style,
+            ),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => _settingsItems[index].widget
               ),
             ),
-          ),
-        );
-      }).toList()),
+          );
+        },
+      ),
     );
   }
 }
