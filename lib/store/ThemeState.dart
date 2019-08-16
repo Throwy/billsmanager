@@ -27,5 +27,6 @@ class ThemeState extends Model {
     notifyListeners();
   }
 
-  static ThemeState of(BuildContext context) => ScopedModel.of<ThemeState>(context);
+  static ThemeState of(BuildContext context) =>
+      ScopedModel.of<ThemeState>(context);
 }

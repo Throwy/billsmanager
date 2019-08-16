@@ -46,6 +46,7 @@ class CreateBillPageState extends State<CreateBillPage> {
                         items: DropDownItems.billTypes.map<DropdownMenuItem>(
                           (type) {
                             return DropdownMenuItem(
+                              value: type,
                               child: Text(type),
                             );
                           },
