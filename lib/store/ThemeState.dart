@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AppState extends Model {
+class ThemeState extends Model {
   final SharedPreferences preferences;
   Brightness _brightness;
 
-  AppState({Key key, @required this.preferences}) {
+  ThemeState({Key key, @required this.preferences}) {
     try {
       if (preferences.containsKey("brightness")) {
         var brightnessIndex = preferences.getInt("brightness");
@@ -27,5 +27,5 @@ class AppState extends Model {
     notifyListeners();
   }
 
-  static AppState of(BuildContext context) => ScopedModel.of<AppState>(context);
+  static ThemeState of(BuildContext context) => ScopedModel.of<ThemeState>(context);
 }

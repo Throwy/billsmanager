@@ -2,7 +2,7 @@ import 'package:billsmanager/models/DrawerItem.dart';
 import 'package:billsmanager/pages/entryforms/CreateBillPage.dart';
 import 'package:billsmanager/pages/history/HistoryPage.dart';
 import 'package:billsmanager/pages/settings/SettingsPage.dart';
-import 'package:billsmanager/store/AppState.dart';
+import 'package:billsmanager/store/ThemeState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,20 +10,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   runApp(App(
-    state: AppState(preferences: preferences),
+    state: ThemeState(preferences: preferences),
   ));
 }
 
 class App extends StatelessWidget {
-  final AppState state;
+  final ThemeState state;
 
   const App({Key key, @required this.state}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<AppState>(
+    return ScopedModel<ThemeState>(
       model: state,
-      child: ScopedModelDescendant<AppState>(
+      child: ScopedModelDescendant<ThemeState>(
         builder: (context, child, model) {
           return MaterialApp(
             title: 'Bills Manager',

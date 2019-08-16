@@ -1,4 +1,4 @@
-import 'package:billsmanager/store/AppState.dart';
+import 'package:billsmanager/store/ThemeState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -15,7 +15,7 @@ class ThemeSettingsState extends State<ThemeSettingsPage> {
       ),
       body: ListView(
         children: <Widget>[
-          ScopedModelDescendant<AppState>(
+          ScopedModelDescendant<ThemeState>(
             builder: (context, child, model) {
               return RadioListTile(
                 title: Text("Dark"),
@@ -27,7 +27,7 @@ class ThemeSettingsState extends State<ThemeSettingsPage> {
               );
             },
           ),
-          ScopedModelDescendant<AppState>(
+          ScopedModelDescendant<ThemeState>(
             builder: (context, child, model) {
               return RadioListTile(
                 title: Text("Light"),
