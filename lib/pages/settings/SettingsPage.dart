@@ -2,14 +2,10 @@ import 'package:billsmanager/models/SettingsItem.dart';
 import 'package:billsmanager/pages/settings/ThemeSettingsPage.dart';
 import 'package:flutter/material.dart';
 
-class SettingsPage extends StatefulWidget {
-  SettingsPageState createState() => new SettingsPageState();
-}
+class SettingsPage extends StatelessWidget {
+  final TextStyle _style = TextStyle(fontSize: 22.0);
 
-class SettingsPageState extends State<SettingsPage> {
-  TextStyle _style = TextStyle(fontSize: 22.0);
-
-  List<SettingsItem> _settingsItems = [
+  final List<SettingsItem> _settingsItems = [
     new SettingsItem("Theme", new ThemeSettingsPage())
   ];
 
@@ -33,8 +29,8 @@ class SettingsPageState extends State<SettingsPage> {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (BuildContext context) => _settingsItems[index].widget
-              ),
+                  builder: (BuildContext context) =>
+                      _settingsItems[index].widget),
             ),
           );
         },

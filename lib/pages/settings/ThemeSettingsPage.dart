@@ -2,11 +2,7 @@ import 'package:billsmanager/store/ThemeState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class ThemeSettingsPage extends StatefulWidget {
-  ThemeSettingsState createState() => new ThemeSettingsState();
-}
-
-class ThemeSettingsState extends State<ThemeSettingsPage> {
+class ThemeSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
