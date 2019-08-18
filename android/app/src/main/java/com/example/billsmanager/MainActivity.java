@@ -1,4 +1,4 @@
-package com.example.billsmanager;
+package com.throwy.billsmanager;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
