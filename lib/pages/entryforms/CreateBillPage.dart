@@ -14,11 +14,6 @@ class CreateBillPageState extends State<CreateBillPage> {
   final String _title = "Add Bill";
   Bill _newBill = new Bill();
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   void createBill() {
     if (_formKey.currentState.validate()) {
       print(_newBill.billType);
