@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 class BillItem extends StatelessWidget {
+  final TextStyle _titleStyle = TextStyle(fontSize: 22.0);
+  final TextStyle _billTypeStyle = TextStyle(fontSize: 16.0);
+  final TextStyle _amountDueStyle = TextStyle(fontSize: 16.0);
+  final TextStyle _dueOnStyle = TextStyle(color: Colors.white60);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 10.0, 0.0, 10.0),
+      margin: EdgeInsets.fromLTRB(0, 5.0, 0.0, 5.0),
       width: MediaQuery.of(context).size.width,
-      height: 120.0,
+      //height: 120.0,
       child: Card(
         child: Container(
           padding: EdgeInsets.all(10.0),
@@ -17,34 +22,34 @@ class BillItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Title"),
-                    Text("Due On"),
-                    Text("Bill Type")
+                    Text(
+                      "Car bill",
+                      style: _titleStyle,
+                    ),
+                    Text(
+                      "Car Loan",
+                      style: _billTypeStyle,
+                    ),
+                    Text(
+                      "Today  >  Pay Now",
+                      style: _dueOnStyle,
+                    ),
                   ],
                 ),
               ),
-              Container(
-                child: Text("Amount Due"),
-                margin: EdgeInsets.only(right: 5.0),
+              Column(
+                children: <Widget>[
+                  Text(
+                    "\$300.00",
+                    style: _amountDueStyle,
+                  ),
+                  RaisedButton(
+                    child: Text("Pay"),
+                    color: Theme.of(context).accentColor,
+                    onPressed: () => print("pay button"),
+                  ),
+                ],
               ),
-              Container(
-                //color: Colors.blue,
-                child: RaisedButton(
-                  child: Text("Pay"),
-                  color: Theme.of(context).accentColor,
-                  onPressed: () => print("pay button"),
-                ),
-              ),
-              // Column(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: <Widget>[
-              //     FlatButton(
-              //       child: Text("Pay"),
-              //       color: Colors.green,
-              //       onPressed: () => print("pay button"),
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ),
