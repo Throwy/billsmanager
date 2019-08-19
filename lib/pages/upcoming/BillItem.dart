@@ -31,7 +31,7 @@ class BillItem extends StatelessWidget {
                 //color: Colors.blue,
                 child: RaisedButton(
                   child: Text("Pay"),
-                  color: Colors.green,
+                  color: Theme.of(context).accentColor,
                   onPressed: () => print("pay button"),
                 ),
               ),
