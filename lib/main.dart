@@ -1,5 +1,6 @@
 import 'package:billsmanager/models/DrawerItem.dart';
 import 'package:billsmanager/pages/entryforms/CreateBillPage.dart';
+import 'package:billsmanager/pages/entryforms/CreatePaymentPage.dart';
 import 'package:billsmanager/pages/history/HistoryPage.dart';
 import 'package:billsmanager/pages/settings/SettingsPage.dart';
 import 'package:billsmanager/store/ThemeState.dart';
@@ -124,6 +125,15 @@ class LandingPageState extends State<LandingPage> {
                 ListTile(
                   leading: Icon(Icons.payment),
                   title: Text("Add Payment"),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CreatePaymentPage(),
+                      ),
+                    );
+                  },
                 ),
               ],
             );

@@ -14,7 +14,7 @@ class CreateBillPageState extends State<CreateBillPage> {
   final String _title = "Add Bill";
   Bill _newBill = new Bill();
 
-  void createBill() {
+  bool createBill() {
     if (_formKey.currentState.validate()) {
       print(_newBill.billType);
       print(_newBill.title);
@@ -23,7 +23,10 @@ class CreateBillPageState extends State<CreateBillPage> {
       print(_newBill.reminderPeriod);
       print(_newBill.repeatPeriod);
       print(_newBill.notes);
+
+      return true;
     }
+    return false;
   }
 
   @override
@@ -35,8 +38,9 @@ class CreateBillPageState extends State<CreateBillPage> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () {
-              createBill();
-              Navigator.pop(context);
+              if (createBill()) {
+                Navigator.pop(context);
+              }
             },
           )
         ],
