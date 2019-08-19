@@ -5,7 +5,7 @@ class UpcomingBillsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
+      padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
       children: <Widget>[
         Column(
           mainAxisSize: MainAxisSize.max,
@@ -14,6 +14,7 @@ class UpcomingBillsPage extends StatelessWidget {
             BillItem(),
             BillItem(),
             BillItem(),
+            BillItem()
           ],
         ),
       ],

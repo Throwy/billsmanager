@@ -10,10 +10,41 @@ class BillItem extends StatelessWidget {
       child: Card(
         child: Container(
           padding: EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
             children: <Widget>[
-              Text("Title"),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Title"),
+                    Text("Due On"),
+                    Text("Bill Type")
+                  ],
+                ),
+              ),
+              Container(
+                child: Text("Amount Due"),
+                margin: EdgeInsets.only(right: 5.0),
+              ),
+              Container(
+                //color: Colors.blue,
+                child: RaisedButton(
+                  child: Text("Pay"),
+                  color: Colors.green,
+                  onPressed: () => print("pay button"),
+                ),
+              ),
+              // Column(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     FlatButton(
+              //       child: Text("Pay"),
+              //       color: Colors.green,
+              //       onPressed: () => print("pay button"),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
