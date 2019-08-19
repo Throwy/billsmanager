@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
 class BillItem extends StatelessWidget {
-  final TextStyle _titleStyle = TextStyle(fontSize: 22.0);
-  final TextStyle _billTypeStyle = TextStyle(fontSize: 16.0);
-  final TextStyle _amountDueStyle = TextStyle(fontSize: 16.0);
-  final TextStyle _dueOnStyle = TextStyle(color: Colors.white60);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,15 +19,25 @@ class BillItem extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       "Car bill",
-                      style: _titleStyle,
+                      style: TextStyle(
+                        fontSize: 22.0,
+                      ),
                     ),
                     Text(
                       "Car Loan",
-                      style: _billTypeStyle,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ),
                     ),
                     Text(
                       "Today  >  Pay Now",
-                      style: _dueOnStyle,
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .textTheme
+                            .subtitle
+                            .color
+                            .withOpacity(0.6),
+                      ),
                     ),
                   ],
                 ),
@@ -41,10 +46,17 @@ class BillItem extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     "\$300.00",
-                    style: _amountDueStyle,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                    ),
                   ),
                   RaisedButton(
-                    child: Text("Pay"),
+                    child: Text(
+                      "Pay",
+                      style: TextStyle(
+                        color: Theme.of(context).accentTextTheme.button.color,
+                      ),
+                    ),
                     color: Theme.of(context).accentColor,
                     onPressed: () => print("pay button"),
                   ),
