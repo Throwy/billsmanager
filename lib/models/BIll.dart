@@ -1,11 +1,24 @@
 class Bill {
   int id;
+  String billType;
   String title;
   DateTime dueOn;
-  double amountDue;
+  String amountDue;
   bool reminder;
-  Duration reminderPeriod;
+  String reminderPeriod;
   bool repeats;
-  Duration repeatPeriod;
+  String repeatPeriod;
   String notes;
+  Bill();
+  Bill.withValues(
+      this.id,
+      this.billType,
+      this.title,
+      this.dueOn,
+      this.amountDue,
+      this.reminder,
+      this.reminderPeriod,
+      this.repeats,
+      this.repeatPeriod,
+      this.notes);
 }

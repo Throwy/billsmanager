@@ -111,12 +111,15 @@ class LandingPageState extends State<LandingPage> {
                 ListTile(
                   leading: Icon(Icons.attach_money),
                   title: Text("Add Bill"),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CreateBillPage(),
-                    ),
-                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CreateBillPage(),
+                      ),
+                    );
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.payment),

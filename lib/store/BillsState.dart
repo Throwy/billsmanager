@@ -1,16 +1,12 @@
 import 'package:billsmanager/models/BIll.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class BillsState extends Model {
-  final SharedPreferences preferences;
+  //final SharedPreferences preferences;
   List<Bill> _bills;
 
-  BillsState({Key key, @required this.preferences}) {
-    
-  }
+  BillsState();
 
   List<Bill> get bills => _bills;
 

@@ -1,19 +1,34 @@
+import 'package:billsmanager/models/BIll.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:billsmanager/models/DropDownItems.Dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class CreateBillPage extends StatefulWidget {
   CreateBillPageState createState() => new CreateBillPageState();
 }
 
 class CreateBillPageState extends State<CreateBillPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
   final String _title = "Add Bill";
-
-  EdgeInsets _fieldMargins = EdgeInsets.fromLTRB(0, 0.0, 0, 0.0);
+  Bill _newBill = new Bill();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  void createBill() {
+    if (_formKey.currentState.validate()) {
+      print(_newBill.billType);
+      print(_newBill.title);
+      print(_newBill.amountDue);
+      print(_newBill.dueOn);
+      print(_newBill.reminderPeriod);
+      print(_newBill.repeatPeriod);
+      print(_newBill.notes);
+    }
   }
 
   @override
@@ -24,83 +39,135 @@ class CreateBillPageState extends State<CreateBillPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
-            onPressed: () => print("Create"),
-          ),
+            onPressed: () {
+              createBill();
+              Navigator.pop(context);
+            },
+          )
         ],
       ),
       body: ListView(
         padding: EdgeInsets.all(20.0),
         children: <Widget>[
-          Form(
+          FormBuilder(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  margin: _fieldMargins,
-                  child: FormField(
-                    builder: (context) {
-                      return DropdownButton(
-                        isExpanded: true,
-                        onChanged: (value) => print(value),
-                        items: DropDownItems.billTypes.map<DropdownMenuItem>(
-                          (type) {
-                            return DropdownMenuItem(
-                              value: type,
-                              child: Text(type),
-                            );
-                          },
-                        ).toList(),
-                      );
-                    },
+                FormBuilderDropdown(
+                  attribute: "billType",
+                  decoration: InputDecoration(
+                    labelText: "Bill Type",
                   ),
-                ),
-                Container(
-                  margin: _fieldMargins,
-                  child: FormField(
-                    builder: (context) {
-                      return TextField(
-                        decoration: InputDecoration(
-                          hintText: "Title",
-                          border: InputBorder.none
+                  validators: [
+                    FormBuilderValidators.required(),
+                  ],
+                  hint: Text("Select Bill Type"),
+                  items: DropDownItems.billTypes
+                      .map(
+                        (type) => DropdownMenuItem(
+                          value: type,
+                          child: Text(type),
                         ),
-                      );
-                    },
-                  ),
+                      )
+                      .toList(),
+                  onChanged: (val) => setState(() {
+                    _newBill.billType = val;
+                  }),
                 ),
-                Divider(
-                  color: Theme.of(context).accentColor,
-                ),
-                Container(
-                  margin: _fieldMargins,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Amount",
-                      prefixIcon: Icon(Icons.attach_money),
-                    ),
+                FormBuilderTextField(
+                  attribute: "title",
+                  decoration: InputDecoration(
+                    labelText: "Title",
                   ),
+                  validators: [
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.maxLength(30),
+                  ],
+                  onChanged: (val) => setState(() {
+                    _newBill.title = val;
+                  }),
                 ),
-                Container(
-                  margin: _fieldMargins,
-                  child: TextField(
-                    readOnly: true,
-                    onTap: () => showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(DateTime.now().year),
-                      lastDate: DateTime(2999),
-                      builder: (context, child) {
-                        return Theme(
-                          data: ThemeData.dark(),
-                          child: child,
-                        );
-                      },
-                    ),
-                    decoration: InputDecoration(
-                      hintText: "Due Date",
-                      prefixIcon: Icon(Icons.calendar_today),
-                    ),
+                FormBuilderTextField(
+                  attribute: "amountDue",
+                  validators: [
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.numeric(),
+                  ],
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: "Amount Due",
                   ),
+                  onChanged: (val) => setState(() {
+                    _newBill.amountDue = val;
+                  }),
+                ),
+                FormBuilderDateTimePicker(
+                  attribute: "dueOn",
+                  inputType: InputType.date,
+                  validators: [
+                    FormBuilderValidators.required(),
+                  ],
+                  format: DateFormat("MM-dd-yyyy"),
+                  decoration: InputDecoration(
+                    labelText: "Due On",
+                  ),
+                  onChanged: (val) => setState(() {
+                    _newBill.dueOn = val;
+                  }),
+                ),
+                FormBuilderDropdown(
+                  attribute: "reminderPeriod",
+                  hint: Text("Select Reminder Period"),
+                  decoration: InputDecoration(
+                    labelText: "Reminder",
+                  ),
+                  validators: [
+                    FormBuilderValidators.required(),
+                  ],
+                  //initialValue: "5 days before",
+                  items: DropDownItems.reminderPeriods
+                      .map(
+                        (item) => DropdownMenuItem(
+                          value: item,
+                          child: Text(item),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (val) => setState(() {
+                    _newBill.reminderPeriod = val;
+                  }),
+                ),
+                FormBuilderDropdown(
+                  attribute: "repeatPeriod",
+                  hint: Text("Select repeat period"),
+                  decoration: InputDecoration(
+                    labelText: "Repeat",
+                  ),
+                  validators: [
+                    FormBuilderValidators.required(),
+                  ],
+                  //initialValue: "Does not repeat",
+                  items: DropDownItems.repeatPeriods
+                      .map(
+                        (item) => DropdownMenuItem(
+                          value: item,
+                          child: Text(item),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (val) => setState(() {
+                    _newBill.repeatPeriod = val;
+                  }),
+                ),
+                FormBuilderTextField(
+                  attribute: "notes",
+                  decoration: InputDecoration(
+                    labelText: "Notes",
+                  ),
+                  maxLines: 4,
+                  onChanged: (val) => setState(() {
+                    _newBill.notes = val;
+                  }),
                 ),
               ],
             ),
