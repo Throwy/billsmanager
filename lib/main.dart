@@ -3,6 +3,7 @@ import 'package:billsmanager/pages/entryforms/CreateBillPage.dart';
 import 'package:billsmanager/pages/entryforms/CreatePaymentPage.dart';
 import 'package:billsmanager/pages/history/HistoryPage.dart';
 import 'package:billsmanager/pages/settings/SettingsPage.dart';
+import 'package:billsmanager/pages/upcoming/UpcomingBillsPage.dart';
 import 'package:billsmanager/store/ThemeState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -101,7 +102,7 @@ class LandingPageState extends State<LandingPage> {
           ],
         ),
       ),
-      body: Center(),
+      body: UpcomingBillsPage(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showModalBottomSheet(
           context: context,
