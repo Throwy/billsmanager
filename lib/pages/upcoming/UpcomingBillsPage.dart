@@ -13,8 +13,6 @@ class UpcomingBillsPage extends StatelessWidget {
             BillItem(),
             BillItem(),
             BillItem(),
-            BillItem(),
-            BillItem()
           ],
         ),
       ],
