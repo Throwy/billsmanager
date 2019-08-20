@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
   scoped_model: ^1.0.1
   shared_preferences: ^0.5.3+4
+  sqflite: ^1.1.6+3
+  path: ^1.6.2
   path_provider: ^1.2.0
   flutter_form_builder: ^3.3.4
   flutter_local_notifications: ^0.8.1+1
