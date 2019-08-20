@@ -29,16 +29,19 @@ class App extends StatelessWidget {
       model: state,
       child: ScopedModelDescendant<ThemeState>(
         builder: (context, child, model) {
-          return MaterialApp(
-            title: 'Bills Manager',
-            theme: ThemeData(
-              primarySwatch: Colors.teal,
-              brightness: model.brightness,
-            ),
-            home: ScopedModel<BillsState>(
-              model: BillsState(),
-              child: LandingPage(
-                title: 'Bills Manager',
+          return ScopedModel<BillsState>(
+            model: BillsState(),
+            child: MaterialApp(
+              title: 'Bills Manager',
+              theme: ThemeData(
+                primarySwatch: Colors.teal,
+                brightness: model.brightness,
+              ),
+              home: ScopedModel<BillsState>(
+                model: BillsState(),
+                child: LandingPage(
+                  title: 'Bills Manager',
+                ),
               ),
             ),
           );
