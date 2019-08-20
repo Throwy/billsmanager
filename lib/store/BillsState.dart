@@ -17,6 +17,12 @@ class BillsState extends Model {
     return _bills.firstWhere((bill) => bill.id == id);
   }
 
+  List<Bill> getUpcomingBills() {
+    var miliNow = DateTime.now().millisecondsSinceEpoch;
+    var miliAddFive = DateTime.now().add(Duration(days: 5)).millisecondsSinceEpoch;
+    return _bills.where((bill) => (bill.dueOn.millisecondsSinceEpoch <= miliAddFive) && (bill.dueOn.millisecondsSinceEpoch >= miliNow) && (!bill.paid)).toList();
+  }
+
   // Adds one entry to the bills collection.
   void addBill(Bill bill) {
     _bills.add(bill);

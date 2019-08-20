@@ -14,34 +14,33 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   runApp(App(
-    state: ThemeState(preferences: preferences),
+    themeState: ThemeState(preferences: preferences),
+    billsState: BillsState(),
   ));
 }
 
 class App extends StatelessWidget {
-  final ThemeState state;
+  final ThemeState themeState;
+  final BillsState billsState;
 
-  const App({Key key, @required this.state}) : super(key: key);
+  const App({Key key, @required this.themeState, @required this.billsState}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ScopedModel<ThemeState>(
-      model: state,
+      model: themeState,
       child: ScopedModelDescendant<ThemeState>(
         builder: (context, child, model) {
           return ScopedModel<BillsState>(
-            model: BillsState(),
+            model: billsState,
             child: MaterialApp(
               title: 'Bills Manager',
               theme: ThemeData(
                 primarySwatch: Colors.teal,
                 brightness: model.brightness,
               ),
-              home: ScopedModel<BillsState>(
-                model: BillsState(),
-                child: LandingPage(
-                  title: 'Bills Manager',
-                ),
+              home: LandingPage(
+                title: 'Bills Manager',
               ),
             ),
           );

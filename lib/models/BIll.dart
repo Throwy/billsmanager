@@ -9,6 +9,7 @@ class Bill {
   bool repeats;
   String repeatPeriod;
   String notes;
+  bool paid;
   Bill();
   Bill.withValues(
       this.id,
