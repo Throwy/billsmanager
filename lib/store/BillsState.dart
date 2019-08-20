@@ -1,13 +1,21 @@
 import 'package:billsmanager/models/BIll.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:sqflite/sqflite.dart';
 
 class BillsState extends Model {
-  //final SharedPreferences preferences;
+  final Database database;
   List<Bill> _bills;
 
-  BillsState() {
+  BillsState({Key key, @required this.database}) {
     _bills = new List<Bill>();
+  }
+
+  initBillState() async {
+    List<Map<String, dynamic>> res = await database.query("bills");
+    _bills =
+        res.isNotEmpty ? res.map((bill) => Bill.fromMap(bill)).toList() : [];
+    return this;
   }
 
   List<Bill> get bills => _bills;
@@ -19,14 +27,22 @@ class BillsState extends Model {
 
   List<Bill> getUpcomingBills() {
     var miliNow = DateTime.now().millisecondsSinceEpoch;
-    var miliAddFive = DateTime.now().add(Duration(days: 5)).millisecondsSinceEpoch;
-    return _bills.where((bill) => (bill.dueOn.millisecondsSinceEpoch <= miliAddFive) && (bill.dueOn.millisecondsSinceEpoch >= miliNow) && (!bill.paid)).toList();
+    var miliAddFive =
+        DateTime.now().add(Duration(days: 5)).millisecondsSinceEpoch;
+    return _bills
+        .where((bill) =>
+            (bill.dueOn.millisecondsSinceEpoch <= miliAddFive) &&
+            (bill.dueOn.millisecondsSinceEpoch >= miliNow) &&
+            (!bill.paid))
+        .toList();
   }
 
   // Adds one entry to the bills collection.
-  void addBill(Bill bill) {
-    _bills.add(bill);
-    notifyListeners();
+  void addBill(Bill bill) async {
+    await database.insert("bills", bill.toMap()).then((value) {
+      _bills.add(bill);
+      notifyListeners();
+    });
   }
 
   // Adds multiple entries to the bills collection.

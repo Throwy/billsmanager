@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:billsmanager/helpers/DBProvider.dart';
 import 'package:billsmanager/pages/landing/LandingPage.dart';
 import 'package:billsmanager/store/BillsState.dart';
 import 'package:billsmanager/store/ThemeState.dart';
@@ -7,9 +10,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
+  var db = await DBProvider.db.database;
   runApp(App(
     themeState: ThemeState(preferences: preferences),
-    billsState: BillsState(),
+    billsState: await BillsState(database: db).initBillState(),
   ));
 }
 
