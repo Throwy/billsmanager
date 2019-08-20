@@ -4,7 +4,8 @@ import 'package:billsmanager/pages/entryforms/CreateBillPage.dart';
 import 'package:billsmanager/pages/entryforms/CreatePaymentPage.dart';
 import 'package:billsmanager/pages/history/HistoryPage.dart';
 import 'package:billsmanager/pages/settings/SettingsPage.dart';
-import 'package:billsmanager/pages/upcoming/UpcomingBillsPage.dart';
+import 'package:billsmanager/pages/upcomingoverdue/OverdueBillsPage.dart';
+import 'package:billsmanager/pages/upcomingoverdue/UpcomingBillsPage.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
@@ -69,7 +70,42 @@ class LandingPageState extends State<LandingPage> {
           ],
         ),
       ),
-      body: UpcomingBillsPage(),
+      body: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(kToolbarHeight),
+            child: Container(
+              color: Theme.of(context).primaryColorDark,
+              child: SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(),
+                    ),
+                    TabBar(
+                      tabs: <Widget>[
+                        new Tab(
+                          text: "Upcoming",
+                        ),
+                        new Tab(
+                          text: "Overdue",
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          body: TabBarView(
+            children: <Widget>[
+              UpcomingBillsPage(),
+              OverdueBillsPage(),
+            ],
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showModalBottomSheet(
           context: context,

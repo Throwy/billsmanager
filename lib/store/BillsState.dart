@@ -27,14 +27,34 @@ class BillsState extends Model {
 
   List<Bill> getUpcomingBills() {
     var miliNow = DateTime.now().millisecondsSinceEpoch;
-    var miliAddFive =
-        DateTime.now().add(Duration(days: 5)).millisecondsSinceEpoch;
-    return _bills
+    var miliExtended =
+        DateTime.now().add(Duration(days: 7)).millisecondsSinceEpoch;
+    var list = _bills
         .where((bill) =>
-            (bill.dueOn.millisecondsSinceEpoch <= miliAddFive) &&
+            (bill.dueOn.millisecondsSinceEpoch <= miliExtended) &&
             (bill.dueOn.millisecondsSinceEpoch >= miliNow) &&
             (!bill.paid))
         .toList();
+    list.sort((a, b) => a.dueOn.millisecondsSinceEpoch.compareTo(b.dueOn.millisecondsSinceEpoch));
+    return list;
+  }
+
+  List<Bill> getOverdueBills() {
+    var list = _bills.where((bill) => bill.dueOn.millisecondsSinceEpoch < DateTime.now().millisecondsSinceEpoch).toList();
+    list.sort((a, b) => a.dueOn.millisecondsSinceEpoch.compareTo(b.dueOn.millisecondsSinceEpoch));
+    return list;
+  }
+
+  List<Bill> getPaidBills() {
+    var list = _bills.where((bill) => bill.paid).toList();
+    list.sort((a, b) => a.dueOn.millisecondsSinceEpoch.compareTo(b.dueOn.millisecondsSinceEpoch));
+    return list;
+  }
+
+  List<Bill> getRelevantBills() {
+    var list = _bills.where((bill) => (bill.dueOn.millisecondsSinceEpoch > DateTime.now().millisecondsSinceEpoch) && !bill.paid).toList();
+    list.sort((a, b) => a.dueOn.millisecondsSinceEpoch.compareTo(b.dueOn.millisecondsSinceEpoch));
+    return list;
   }
 
   // Adds one entry to the bills collection.

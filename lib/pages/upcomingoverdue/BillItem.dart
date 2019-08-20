@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class BillItem extends StatelessWidget {
   final Bill bill;
+  final bool overDue;
 
-  BillItem({Key key, @required this.bill});
+  BillItem({Key key, @required this.bill, @required this.overDue});
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +14,21 @@ class BillItem extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       //height: 120.0,
       child: Card(
+        shape: overDue
+            ? RoundedRectangleBorder(
+                side: BorderSide(
+                  color: Colors.red,
+                  width: 2.0,
+                ),
+                borderRadius: BorderRadius.circular(4.0),
+              )
+            : RoundedRectangleBorder(
+                side: BorderSide(
+                  color: Theme.of(context).cardColor,
+                  width: 2.0,
+                ),
+                borderRadius: BorderRadius.circular(4.0),
+              ),
         child: Container(
           padding: EdgeInsets.all(10.0),
           child: Row(
@@ -35,7 +51,7 @@ class BillItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Today  >  Pay Now",
+                      "${bill.dueOn.month}/${bill.dueOn.day}/${bill.dueOn.year}  >  Pay Now",
                       style: TextStyle(
                         color: Theme.of(context)
                             .textTheme

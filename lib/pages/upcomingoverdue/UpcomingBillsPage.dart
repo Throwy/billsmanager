@@ -1,7 +1,8 @@
-import 'package:billsmanager/pages/upcoming/BillItem.dart';
 import 'package:billsmanager/store/BillsState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import 'BillItem.dart';
 
 class UpcomingBillsPage extends StatelessWidget {
   @override
@@ -15,7 +16,10 @@ class UpcomingBillsPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: model
                     .getUpcomingBills()
-                    .map((bill) => BillItem(bill: bill))
+                    .map((bill) => BillItem(
+                          bill: bill,
+                          overDue: false,
+                        ))
                     .toList()),
           ],
         );
