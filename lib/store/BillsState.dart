@@ -6,7 +6,9 @@ class BillsState extends Model {
   //final SharedPreferences preferences;
   List<Bill> _bills;
 
-  BillsState();
+  BillsState() {
+    _bills = new List<Bill>();
+  }
 
   List<Bill> get bills => _bills;
 

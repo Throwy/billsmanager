@@ -1,9 +1,11 @@
 import 'package:billsmanager/models/BIll.dart';
+import 'package:billsmanager/store/BillsState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:billsmanager/models/DropDownItems.Dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class CreateBillPage extends StatefulWidget {
   CreateBillPageState createState() => new CreateBillPageState();
@@ -14,21 +16,6 @@ class CreateBillPageState extends State<CreateBillPage> {
   final String _title = "Add Bill";
   Bill _newBill = new Bill();
 
-  bool createBill() {
-    if (_formKey.currentState.validate()) {
-      print(_newBill.billType);
-      print(_newBill.title);
-      print(_newBill.amountDue);
-      print(_newBill.dueOn);
-      print(_newBill.reminderPeriod);
-      print(_newBill.repeatPeriod);
-      print(_newBill.notes);
-
-      return true;
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +25,8 @@ class CreateBillPageState extends State<CreateBillPage> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () {
-              if (createBill()) {
+              if(_formKey.currentState.validate()) {
+                ScopedModel.of<BillsState>(context).addBill(_newBill);
                 Navigator.pop(context);
               }
             },

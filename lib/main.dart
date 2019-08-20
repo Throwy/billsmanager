@@ -5,6 +5,7 @@ import 'package:billsmanager/pages/entryforms/CreatePaymentPage.dart';
 import 'package:billsmanager/pages/history/HistoryPage.dart';
 import 'package:billsmanager/pages/settings/SettingsPage.dart';
 import 'package:billsmanager/pages/upcoming/UpcomingBillsPage.dart';
+import 'package:billsmanager/store/BillsState.dart';
 import 'package:billsmanager/store/ThemeState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -34,7 +35,12 @@ class App extends StatelessWidget {
               primarySwatch: Colors.teal,
               brightness: model.brightness,
             ),
-            home: LandingPage(title: 'Bills Manager'),
+            home: ScopedModel<BillsState>(
+              model: BillsState(),
+              child: LandingPage(
+                title: 'Bills Manager',
+              ),
+            ),
           );
         },
       ),

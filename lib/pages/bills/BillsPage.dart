@@ -1,5 +1,7 @@
 import 'package:billsmanager/pages/bills/CalendarPage.dart';
+import 'package:billsmanager/store/BillsState.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class BillsPage extends StatelessWidget {
   @override
@@ -19,8 +21,18 @@ class BillsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
-        children: <Widget>[],
+      body: ScopedModelDescendant<BillsState>(
+        builder: (context, child, model) {
+          return ListView(
+            children: model.bills.map((bill) {
+              return ListTile(
+                title: Text(bill.title),
+                subtitle: Text(bill.dueOn.toLocal().toString()),
+                trailing: Text(bill.amountDue),
+              );
+            }).toList(),
+          );
+        },
       ),
     );
   }
