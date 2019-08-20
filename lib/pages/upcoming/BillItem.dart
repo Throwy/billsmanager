@@ -1,6 +1,11 @@
+import 'package:billsmanager/models/BIll.dart';
 import 'package:flutter/material.dart';
 
 class BillItem extends StatelessWidget {
+  final Bill bill;
+
+  BillItem({Key key, @required this.bill});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,13 +23,13 @@ class BillItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Car bill",
+                      bill.title,
                       style: TextStyle(
                         fontSize: 22.0,
                       ),
                     ),
                     Text(
-                      "Car Loan",
+                      bill.billType,
                       style: TextStyle(
                         fontSize: 16.0,
                       ),
@@ -45,7 +50,7 @@ class BillItem extends StatelessWidget {
               Column(
                 children: <Widget>[
                   Text(
-                    "\$300.00",
+                    "\$${bill.amountDue}",
                     style: TextStyle(
                       fontSize: 18.0,
                     ),

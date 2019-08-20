@@ -1,21 +1,25 @@
 import 'package:billsmanager/pages/upcoming/BillItem.dart';
+import 'package:billsmanager/store/BillsState.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class UpcomingBillsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-      children: <Widget>[
-        Column(
-          mainAxisSize: MainAxisSize.max,
+    return ScopedModelDescendant<BillsState>(
+      builder: (context, child, model) {
+        return ListView(
+          padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
           children: <Widget>[
-            BillItem(),
-            BillItem(),
-            BillItem(),
+            Column(
+                mainAxisSize: MainAxisSize.max,
+                children: model
+                    .getUpcomingBills()
+                    .map((bill) => BillItem(bill: bill))
+                    .toList()),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 }
