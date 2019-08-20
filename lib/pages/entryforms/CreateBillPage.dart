@@ -17,6 +17,12 @@ class CreateBillPageState extends State<CreateBillPage> {
   Bill _newBill = new Bill();
 
   @override
+  void initState() {
+    super.initState();
+    _newBill.paid = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -121,6 +127,7 @@ class CreateBillPageState extends State<CreateBillPage> {
                       )
                       .toList(),
                   onChanged: (val) => setState(() {
+                    _newBill.reminder = val == "No Reminder" ? false : true;
                     _newBill.reminderPeriod = val;
                   }),
                 ),
@@ -143,6 +150,7 @@ class CreateBillPageState extends State<CreateBillPage> {
                       )
                       .toList(),
                   onChanged: (val) => setState(() {
+                    _newBill.repeats = val == "Does not repeat" ? false : true;
                     _newBill.repeatPeriod = val;
                   }),
                 ),

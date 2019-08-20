@@ -49,6 +49,7 @@ class DBProvider {
       "title TEXT,"
       "due_on INTEGER,"
       "amount_due TEXT,"
+      "reminder INTEGER,"
       "reminder_period TEXT,"
       "repeats INTEGER,"
       "repeat_period TEXT,"

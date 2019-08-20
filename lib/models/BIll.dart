@@ -23,7 +23,8 @@ class Bill {
       this.reminderPeriod,
       this.repeats,
       this.repeatPeriod,
-      this.notes);
+      this.notes,
+      this.paid);
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
@@ -31,6 +32,7 @@ class Bill {
       "title": title,
       "due_on": dueOn.millisecondsSinceEpoch,
       "amount_due": amountDue,
+      "reminder": reminder == true ? 1 : 0,
       "reminder_period": reminderPeriod,
       "repeats": repeats == true ? 1 : 0,
       "repeat_period": repeatPeriod,
@@ -49,6 +51,7 @@ class Bill {
     title = map["title"];
     dueOn = DateTime.fromMillisecondsSinceEpoch(map["due_on"]);
     amountDue = map["amount_due"];
+    reminder = map["reminder"] == 1;
     reminderPeriod = map["reminder_period"];
     repeats = map["repeats"] == 1;
     repeatPeriod = map["repeat_period"];
