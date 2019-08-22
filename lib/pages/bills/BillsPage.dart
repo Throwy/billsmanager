@@ -1,7 +1,7 @@
 import 'package:billsmanager/pages/bills/CalendarPage.dart';
-import 'package:billsmanager/store/BillsState.dart';
+import 'package:billsmanager/pages/bills/tabs/PaidBillsPage.dart';
+import 'package:billsmanager/pages/bills/tabs/UnpaidBillsPage.dart';
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 class BillsPage extends StatelessWidget {
   @override
@@ -21,19 +21,55 @@ class BillsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: ScopedModelDescendant<BillsState>(
-        builder: (context, child, model) {
-          return ListView(
-            children: model.bills.map((bill) {
-              return ListTile(
-                title: Text(bill.title),
-                subtitle: Text(bill.dueOn.toLocal().toString()),
-                trailing: Text(bill.amountDue),
-              );
-            }).toList(),
-          );
-        },
+      body: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(kToolbarHeight),
+            child: Container(
+              color: Theme.of(context).primaryColorDark,
+              child: SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(),
+                    ),
+                    TabBar(
+                      tabs: <Widget>[
+                        Tab(
+                          text: "Unpaid",
+                        ),
+                        Tab(
+                          text: "Paid",
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          body: TabBarView(
+            children: <Widget>[
+              UnpaidBillsPage(),
+              PaidBillsPage(),
+            ],
+          ),
+        ),
       ),
+      // body: ScopedModelDescendant<BillsState>(
+      //   builder: (context, child, model) {
+      //     return ListView(
+      //       children: model.bills.map((bill) {
+      //         return ListTile(
+      //           title: Text(bill.title),
+      //           subtitle: Text(bill.dueOn.toLocal().toString()),
+      //           trailing: Text(bill.amountDue),
+      //         );
+      //       }).toList(),
+      //     );
+      //   },
+      // ),
     );
   }
 }

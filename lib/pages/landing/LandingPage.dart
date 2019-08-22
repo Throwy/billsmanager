@@ -3,9 +3,9 @@ import 'package:billsmanager/pages/bills/BillsPage.dart';
 import 'package:billsmanager/pages/entryforms/CreateBillPage.dart';
 import 'package:billsmanager/pages/entryforms/CreatePaymentPage.dart';
 import 'package:billsmanager/pages/history/HistoryPage.dart';
+import 'package:billsmanager/pages/landing/tabs/OverdueBillsPage.dart';
+import 'package:billsmanager/pages/landing/tabs/UpcomingBillsPage.dart';
 import 'package:billsmanager/pages/settings/SettingsPage.dart';
-import 'package:billsmanager/pages/upcomingoverdue/OverdueBillsPage.dart';
-import 'package:billsmanager/pages/upcomingoverdue/UpcomingBillsPage.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
@@ -85,10 +85,10 @@ class LandingPageState extends State<LandingPage> {
                     ),
                     TabBar(
                       tabs: <Widget>[
-                        new Tab(
+                        Tab(
                           text: "Upcoming",
                         ),
-                        new Tab(
+                        Tab(
                           text: "Overdue",
                         ),
                       ],

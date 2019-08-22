@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
 
-class HistoryPage extends StatefulWidget {
-  HistoryPageState createState() => new HistoryPageState();
-}
-
-class HistoryPageState extends State<HistoryPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

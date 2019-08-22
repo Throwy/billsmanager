@@ -45,14 +45,14 @@ class BillsState extends Model {
     return list;
   }
 
-  List<Bill> getPaidBills() {
-    var list = _bills.where((bill) => bill.paid).toList();
+  List<Bill> getUnpaidBills() {
+    var list = _bills.where((bill) => !bill.paid).toList();
     list.sort((a, b) => a.dueOn.millisecondsSinceEpoch.compareTo(b.dueOn.millisecondsSinceEpoch));
     return list;
   }
 
-  List<Bill> getRelevantBills() {
-    var list = _bills.where((bill) => (bill.dueOn.millisecondsSinceEpoch > DateTime.now().millisecondsSinceEpoch) && !bill.paid).toList();
+  List<Bill> getPaidBills() {
+    var list = _bills.where((bill) => bill.paid).toList();
     list.sort((a, b) => a.dueOn.millisecondsSinceEpoch.compareTo(b.dueOn.millisecondsSinceEpoch));
     return list;
   }
