@@ -4,9 +4,9 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// Models the app state regarding bills.
-/// 
+///
 /// This class holds all of the bills created by the user in the app.
-/// 
+///
 /// There are multiple methods for retrieving bills based on different
 /// parameters.
 class BillsState extends Model {
@@ -18,12 +18,14 @@ class BillsState extends Model {
   }
 
   /// Initializes the [BillsState] class.
-  /// 
+  ///
   /// This should only be called once, ie. when the app is being opened.
   initBillsState() async {
-    List<Map<String, dynamic>> res = await database.query("bills");
-    _bills =
-        res.isNotEmpty ? res.map((bill) => Bill.fromMap(bill)).toList() : [];
+    if (database != null) {
+      List<Map<String, dynamic>> res = await database.query("bills");
+      _bills =
+          res.isNotEmpty ? res.map((bill) => Bill.fromMap(bill)).toList() : [];
+    }
     return this;
   }
 

@@ -4,9 +4,9 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// Models the app state regarding payments.
-/// 
+///
 /// This class holds all of the payments created by the user in the app.
-/// 
+///
 /// There are multiple methods for retrieving payments based on different
 /// parameters.
 class PaymentsState extends Model {
@@ -18,13 +18,15 @@ class PaymentsState extends Model {
   }
 
   /// Intializes the [PaymentsState] class.
-  /// 
+  ///
   /// This should only be called once, ie. when the app is being opened.
   initPaymentsState() async {
-    List<Map<String, dynamic>> res = await database.query("payments");
-    _payments = res.isNotEmpty
-        ? res.map((payment) => Payment.fromMap(payment)).toList()
-        : [];
+    if (database != null) {
+      List<Map<String, dynamic>> res = await database.query("payments");
+      _payments = res.isNotEmpty
+          ? res.map((payment) => Payment.fromMap(payment)).toList()
+          : [];
+    }
     return this;
   }
 
