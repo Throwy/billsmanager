@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:billsmanager/helpers/DBProvider.dart';
 import 'package:billsmanager/pages/landing/LandingPage.dart';
 import 'package:billsmanager/store/BillsState.dart';
+import 'package:billsmanager/store/PaymentsState.dart';
 import 'package:billsmanager/store/ThemeState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -14,14 +15,16 @@ void main() async {
   runApp(App(
     themeState: ThemeState(preferences: preferences),
     billsState: await BillsState(database: db).initBillsState(),
+    paymentsState: await PaymentsState(database: db).initPaymentsState(),
   ));
 }
 
 class App extends StatelessWidget {
   final ThemeState themeState;
   final BillsState billsState;
+  final PaymentsState paymentsState;
 
-  const App({Key key, @required this.themeState, @required this.billsState}) : super(key: key);
+  const App({Key key, @required this.themeState, @required this.billsState, @required this.paymentsState}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

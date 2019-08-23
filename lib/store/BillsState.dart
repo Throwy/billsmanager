@@ -11,6 +11,7 @@ class BillsState extends Model {
     _bills = new List<Bill>();
   }
 
+  /// Initializes the [BillsState] class.
   initBillsState() async {
     List<Map<String, dynamic>> res = await database.query("bills");
     _bills =
@@ -18,13 +19,15 @@ class BillsState extends Model {
     return this;
   }
 
+  /// Gets all of the [Bill]s.
   List<Bill> get bills => _bills;
 
-  // Gets a bill from the collection.
+  /// Gets a [Bill] from the collection with the given [id].
   Bill getBill(int id) {
     return _bills.firstWhere((bill) => bill.id == id);
   }
 
+  /// Gets all upcoming [Bill]s, including ones due today.
   List<Bill> getUpcomingBills() {
     var miliNow = DateTime.now().millisecondsSinceEpoch;
     var miliExtended =
@@ -41,6 +44,7 @@ class BillsState extends Model {
     return list;
   }
 
+  /// Gets all overdue [Bill]s.
   List<Bill> getOverdueBills() {
     DateTime now = DateTime.now();
     var list = _bills
@@ -53,6 +57,7 @@ class BillsState extends Model {
     return list;
   }
 
+  /// Gets all unpaid [Bill]s.
   List<Bill> getUnpaidBills() {
     var list = _bills.where((bill) => !bill.paid).toList();
     list.sort((a, b) => a.dueOn.millisecondsSinceEpoch
@@ -60,6 +65,7 @@ class BillsState extends Model {
     return list;
   }
 
+  /// Gets all paid [Bill]s.
   List<Bill> getPaidBills() {
     var list = _bills.where((bill) => bill.paid).toList();
     list.sort((a, b) => a.dueOn.millisecondsSinceEpoch
@@ -67,7 +73,7 @@ class BillsState extends Model {
     return list;
   }
 
-  // Adds one entry to the bills collection.
+  /// Adds one [Bill] to the collection.
   void addBill(Bill bill) async {
     await database.insert("bills", bill.toMap()).then((value) {
       _bills.add(bill);
@@ -75,24 +81,28 @@ class BillsState extends Model {
     });
   }
 
-  // Adds multiple entries to the bills collection.
+  /// Adds multiple [Bill]s to the collection.
   void addBills(List<Bill> bills) {
     _bills.addAll(bills);
     notifyListeners();
   }
 
-  // Deletes a single entry from the bills collection.
-  void deleteBill(int id) {
-    _bills.removeWhere((bill) => bill.id == id);
-    notifyListeners();
+  /// Deletes a single [Bill] from the collection.
+  void deleteBill(int id) async {
+    await database
+        .delete("bills", where: 'id = ?', whereArgs: [id]).then((value) {
+      _bills.removeWhere((bill) => bill.id == id);
+      notifyListeners();
+    });
   }
 
-  // Deletes multiple entries from the bills collection.
+  /// Deletes multiple [Bill]s from the collection.
   void deleteBills(List<int> ids) {
     _bills.removeWhere((bill) => ids.contains(bill.id));
     notifyListeners();
   }
 
+  /// Determines if the given [Bill] is due today.
   bool _dueToday(Bill bill) {
     DateTime now = DateTime.now();
     return (bill.dueOn.year == now.year) &&
@@ -100,6 +110,7 @@ class BillsState extends Model {
         (bill.dueOn.day == now.day);
   }
 
+  /// Helper function to call from anywhere in the tree.
   static BillsState of(BuildContext context) =>
       ScopedModel.of<BillsState>(context);
 }

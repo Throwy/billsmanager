@@ -57,19 +57,6 @@ class BillsPage extends StatelessWidget {
           ),
         ),
       ),
-      // body: ScopedModelDescendant<BillsState>(
-      //   builder: (context, child, model) {
-      //     return ListView(
-      //       children: model.bills.map((bill) {
-      //         return ListTile(
-      //           title: Text(bill.title),
-      //           subtitle: Text(bill.dueOn.toLocal().toString()),
-      //           trailing: Text(bill.amountDue),
-      //         );
-      //       }).toList(),
-      //     );
-      //   },
-      // ),
     );
   }
 }

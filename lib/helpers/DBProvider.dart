@@ -10,16 +10,18 @@ class DBProvider {
 
   static Database _database;
 
+  /// Getter for the database.
   Future<Database> get database async {
     if (_database != null) {
       return _database;
     }
 
-    _database = await initDB();
+    _database = await _initDB();
     return _database;
   }
 
-  initDB() async {
+  /// Initalizes the database from local storage.
+  _initDB() async {
     String databasesPath = await getDatabasesPath();
 
     try {

@@ -26,6 +26,8 @@ class Bill {
       this.notes,
       this.paid);
 
+  /// Converts [Bill] object into a [Map<String, dynamic>] for writing to the
+  /// database.
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       "bill_type": billType,
@@ -39,12 +41,13 @@ class Bill {
       "notes": notes,
       "paid": paid == true ? 1 : 0
     };
-    if(id != null) {
+    if (id != null) {
       map["id"] = id;
     }
     return map;
   }
 
+  /// Converts database read results into a [Bill] object.
   Bill.fromMap(Map<String, dynamic> map) {
     id = map["id"];
     billType = map["bill_type"];
