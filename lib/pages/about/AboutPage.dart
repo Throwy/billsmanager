@@ -13,13 +13,35 @@ class AboutPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              Icon(Icons.payment),
-              Text("Bills Manager"),
-              Text("Version 1.0.0"),
-              Divider(),
-              Text("Developed by"),
-              Text("Gavin Roudebush (Throwy)"),
-              Text("Copyright 2019, All rights reserved."),
+              Container(
+                margin: EdgeInsets.only(top: 60.0),
+                child: Column(
+                  children: <Widget>[
+                    Icon(
+                      Icons.payment,
+                      size: 100.0,
+                    ),
+                    Text(
+                      "Bills Manager",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text("Version 1.0.0"),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                child: Divider(),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Text("Developed by"),
+                    Text("Gavin Roudebush (Throwy)\n"),
+                    Text("Copyright 2019, All rights reserved."),
+                  ],
+                ),
+              ),
             ],
           )
         ],
