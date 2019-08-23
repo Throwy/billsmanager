@@ -13,7 +13,7 @@ void main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   var db = await DBProvider.db.database;
   runApp(App(
-    themeState: ThemeState(preferences: preferences),
+    themeState: ThemeState(preferences: preferences).initThemeState(),
     billsState: await BillsState(database: db).initBillsState(),
     paymentsState: await PaymentsState(database: db).initPaymentsState(),
   ));

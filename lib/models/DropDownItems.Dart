@@ -1,4 +1,6 @@
+/// Helper class to store items that belong in drop down lists.
 class DropDownItems {
+  /// Holds all of the different bill types.
   static final List<String> billTypes = [
     "Car Loan",
     "Credit Card",
@@ -13,6 +15,7 @@ class DropDownItems {
     "Phone",
   ];
 
+  /// Holds all of the different reminder periods.
   static final List<String> reminderPeriods = [
     "No Reminder",
     "1 day before",
@@ -22,6 +25,7 @@ class DropDownItems {
     "5 days before",
   ];
 
+  /// Holds all of the different repeat periods.
   static final List<String> repeatPeriods = [
     "Does not repeat",
     "Daily",

@@ -1,3 +1,6 @@
+/// Describes the attributes of a payment.
+/// 
+/// Every payment must be associated with a [Bill] with the property [billId];
 class Payment {
   int id;
   int billId;

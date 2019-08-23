@@ -1,3 +1,7 @@
+/// Describes the attributes of a bill.
+/// 
+/// Every bill has a due date and amount that's due. This class is for easily
+/// representing a bill in the app.
 class Bill {
   int id;
   String billType;

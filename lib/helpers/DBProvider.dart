@@ -3,6 +3,11 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+/// [DBProvider] is a helper class to cleanly provide a database instance
+/// to the app.
+/// 
+/// The [DBProvider] class handles initializing the database instance and any
+/// migrating between versions of the database.
 class DBProvider {
   DBProvider._();
 
