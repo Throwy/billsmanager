@@ -13,7 +13,7 @@ void main() async {
   var db = await DBProvider.db.database;
   runApp(App(
     themeState: ThemeState(preferences: preferences),
-    billsState: await BillsState(database: db).initBillState(),
+    billsState: await BillsState(database: db).initBillsState(),
   ));
 }
 

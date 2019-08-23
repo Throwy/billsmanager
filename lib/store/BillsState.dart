@@ -11,7 +11,7 @@ class BillsState extends Model {
     _bills = new List<Bill>();
   }
 
-  initBillState() async {
+  initBillsState() async {
     List<Map<String, dynamic>> res = await database.query("bills");
     _bills =
         res.isNotEmpty ? res.map((bill) => Bill.fromMap(bill)).toList() : [];
