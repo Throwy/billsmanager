@@ -9,12 +9,12 @@ class ThemeState extends Model {
   final SharedPreferences preferences;
   Brightness _brightness;
 
-  ThemeState({Key key, @required this.preferences}) {}
+  ThemeState({Key key, @required this.preferences});
 
   /// Initializes the [ThemeState] class.
   ///
   /// This should only be called once, ie. when the app is being opened.
-  initThemeState() {
+  initThemeState() async {
     try {
       if (preferences.containsKey("brightness")) {
         var brightnessIndex = preferences.getInt("brightness");
@@ -25,6 +25,7 @@ class ThemeState extends Model {
     } catch (Exception) {
       _brightness = Brightness.dark;
     }
+    return this;
   }
 
   /// Gets the app [Brightness].

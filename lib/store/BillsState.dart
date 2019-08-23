@@ -21,11 +21,9 @@ class BillsState extends Model {
   ///
   /// This should only be called once, ie. when the app is being opened.
   initBillsState() async {
-    if (database != null) {
-      List<Map<String, dynamic>> res = await database.query("bills");
-      _bills =
-          res.isNotEmpty ? res.map((bill) => Bill.fromMap(bill)).toList() : [];
-    }
+    List<Map<String, dynamic>> res = await database.query("bills");
+    _bills =
+        res.isNotEmpty ? res.map((bill) => Bill.fromMap(bill)).toList() : [];
     return this;
   }
 

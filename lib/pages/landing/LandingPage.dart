@@ -1,4 +1,5 @@
 import 'package:billsmanager/models/DrawerItem.dart';
+import 'package:billsmanager/pages/about/AboutPage.dart';
 import 'package:billsmanager/pages/bills/BillsPage.dart';
 import 'package:billsmanager/pages/entryforms/CreateBillPage.dart';
 import 'package:billsmanager/pages/entryforms/CreatePaymentPage.dart';
@@ -21,6 +22,7 @@ class LandingPageState extends State<LandingPage> {
     new DrawerItem("Bills", Icons.attach_money, BillsPage()),
     new DrawerItem("History", Icons.history, HistoryPage()),
     new DrawerItem("Settings", Icons.settings, SettingsPage()),
+    new DrawerItem("About", Icons.info, AboutPage()),
   ];
 
   List<ListTile> _drawerTiles;

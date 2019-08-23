@@ -36,68 +36,61 @@ class DBProvider {
     }
 
     String dbPath = join(databasesPath, 'bills_manager.db');
-    if (await _isDatabase(dbPath)) {
-      return await openDatabase(
-        dbPath,
-        version: 1,
-        onConfigure: (db) => _onConfigure(db),
-        onCreate: (db, version) => _onCreate(db, version),
-        onUpgrade: (db, oldVersion, newVersion) =>
-            _onUpgrade(db, oldVersion, newVersion),
-        onOpen: (db) => _onOpen(db),
-      );
-    } else {
-      return null;
-    }
+    return await openDatabase(
+      dbPath,
+      version: 1,
+      onConfigure: (db) => _onConfigure(db),
+      onCreate: (db, version) => _onCreate(db, version),
+      onUpgrade: (db, oldVersion, newVersion) =>
+          _onUpgrade(db, oldVersion, newVersion),
+      onOpen: (db) => _onOpen(db),
+    );
   }
 
   /// Callback to configure the database.
   _onConfigure(Database db) async {
     // support for cascade delete
-    await db.execute("PRAGMA foregin_keys = ON");
+    await db.execute("PRAGMA foreign_keys = ON");
   }
 
   /// Callback for processes that need to happen once the database is created.
   _onCreate(Database db, int version) async {
+    Batch batch = db.batch();
+
     // create the bills table
-    await db.execute("CREATE TABLE Bills ("
-        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "bill_type TEXT,"
-        "title TEXT,"
-        "due_on INTEGER,"
-        "amount_due TEXT,"
-        "reminder INTEGER,"
-        "reminder_period TEXT,"
-        "repeats INTEGER,"
-        "repeat_period TEXT,"
-        "notes TEXT,"
-        "paid INTEGER"
-        ")");
+    batch.execute('''CREATE TABLE bills (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        bill_type TEXT,
+        title TEXT,
+        due_on INTEGER,
+        amount_due TEXT,
+        reminder INTEGER,
+        reminder_period TEXT,
+        repeats INTEGER,
+        repeat_period TEXT,
+        notes TEXT,
+        paid INTEGER
+        )''');
+
+    // create the payments table
+    batch.execute('''CREATE TABLE payments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        bill_id INTEGER NOT NULL,
+        amount_paid TEXT,
+        paid_on INTEGER,
+        FOREIGN KEY(bill_id) REFERENCES bills(id) ON DELETE CASCADE
+        )''');
+
+    await batch.commit();
   }
 
   /// Callback to handle migrations of database schema.
-  _onUpgrade(Database db, int oldVersion, int newVersion) async {}
+  _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    print('upgrade');
+  }
 
   /// Callback that's called after the database is opened.
   _onOpen(Database db) async {
     print("Database version: ${await db.getVersion()}");
-  }
-
-  /// Check if the file at the specified path is a valid database file.
-  ///
-  /// An empty file is a valid empty sqlite file.
-  Future<bool> _isDatabase(String path) async {
-    Database db;
-    bool isDatabase = false;
-    try {
-      db = await openReadOnlyDatabase(path);
-      int version = await db.getVersion();
-      if (version != null) {
-        isDatabase = true;
-      }
-    } catch (_) {} finally {
-      await db?.close();
-    }
-    return isDatabase;
   }
 }
