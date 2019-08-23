@@ -31,29 +31,39 @@ class BillsState extends Model {
         DateTime.now().add(Duration(days: 7)).millisecondsSinceEpoch;
     var list = _bills
         .where((bill) =>
+            ((bill.dueOn.millisecondsSinceEpoch >= miliNow) ||
+                _dueToday(bill)) &&
             (bill.dueOn.millisecondsSinceEpoch <= miliExtended) &&
-            (bill.dueOn.millisecondsSinceEpoch >= miliNow) &&
             (!bill.paid))
         .toList();
-    list.sort((a, b) => a.dueOn.millisecondsSinceEpoch.compareTo(b.dueOn.millisecondsSinceEpoch));
+    list.sort((a, b) => a.dueOn.millisecondsSinceEpoch
+        .compareTo(b.dueOn.millisecondsSinceEpoch));
     return list;
   }
 
   List<Bill> getOverdueBills() {
-    var list = _bills.where((bill) => bill.dueOn.millisecondsSinceEpoch < DateTime.now().millisecondsSinceEpoch).toList();
-    list.sort((a, b) => a.dueOn.millisecondsSinceEpoch.compareTo(b.dueOn.millisecondsSinceEpoch));
+    DateTime now = DateTime.now();
+    var list = _bills
+        .where((bill) =>
+            (bill.dueOn.millisecondsSinceEpoch < now.millisecondsSinceEpoch) &&
+            !_dueToday(bill))
+        .toList();
+    list.sort((a, b) => a.dueOn.millisecondsSinceEpoch
+        .compareTo(b.dueOn.millisecondsSinceEpoch));
     return list;
   }
 
   List<Bill> getUnpaidBills() {
     var list = _bills.where((bill) => !bill.paid).toList();
-    list.sort((a, b) => a.dueOn.millisecondsSinceEpoch.compareTo(b.dueOn.millisecondsSinceEpoch));
+    list.sort((a, b) => a.dueOn.millisecondsSinceEpoch
+        .compareTo(b.dueOn.millisecondsSinceEpoch));
     return list;
   }
 
   List<Bill> getPaidBills() {
     var list = _bills.where((bill) => bill.paid).toList();
-    list.sort((a, b) => a.dueOn.millisecondsSinceEpoch.compareTo(b.dueOn.millisecondsSinceEpoch));
+    list.sort((a, b) => a.dueOn.millisecondsSinceEpoch
+        .compareTo(b.dueOn.millisecondsSinceEpoch));
     return list;
   }
 
@@ -81,6 +91,13 @@ class BillsState extends Model {
   void deleteBills(List<int> ids) {
     _bills.removeWhere((bill) => ids.contains(bill.id));
     notifyListeners();
+  }
+
+  bool _dueToday(Bill bill) {
+    DateTime now = DateTime.now();
+    return (bill.dueOn.year == now.year) &&
+        (bill.dueOn.month == now.month) &&
+        (bill.dueOn.day == now.day);
   }
 
   static BillsState of(BuildContext context) =>
