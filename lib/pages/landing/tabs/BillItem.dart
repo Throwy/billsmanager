@@ -79,7 +79,30 @@ class BillItem extends StatelessWidget {
                       ),
                     ),
                     color: Theme.of(context).accentColor,
-                    onPressed: () => print("pay button"),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Pay full amount?"),
+                            actions: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  FlatButton(
+                                    child: Text("CANCEL"),
+                                    onPressed: () => print("cancel"),
+                                  ),
+                                  FlatButton(
+                                    child: Text("PAY"),
+                                    onPressed: () => print("pay all"),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                   ),
                 ],
               ),
