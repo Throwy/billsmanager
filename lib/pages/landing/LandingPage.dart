@@ -35,12 +35,15 @@ class LandingPageState extends State<LandingPage> {
       return ListTile(
         leading: Icon(item.icon),
         title: Text(item.title),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => item.widget,
-          ),
-        ),
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => item.widget,
+            ),
+          );
+        },
       );
     }).toList();
   }
