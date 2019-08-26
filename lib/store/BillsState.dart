@@ -59,7 +59,8 @@ class BillsState extends Model {
     var list = _bills
         .where((bill) =>
             (bill.dueOn.millisecondsSinceEpoch < now.millisecondsSinceEpoch) &&
-            !utilities.sameDate(bill.dueOn, DateTime.now()))
+            !utilities.sameDate(bill.dueOn, DateTime.now()) &&
+            (!bill.paid))
         .toList();
     list.sort((a, b) => a.dueOn.millisecondsSinceEpoch
         .compareTo(b.dueOn.millisecondsSinceEpoch));
