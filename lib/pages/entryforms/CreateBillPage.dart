@@ -1,4 +1,4 @@
-import 'package:billsmanager/models/BIll.dart';
+import 'package:billsmanager/models/Bill.dart';
 import 'package:billsmanager/store/BillsState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

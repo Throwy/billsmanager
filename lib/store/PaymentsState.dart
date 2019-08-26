@@ -42,15 +42,16 @@ class PaymentsState extends Model {
     return list;
   }
 
-  /// Adds one [Payment] to the collection.
+  /// Adds one [Payment] to the database and updates the collection.
   void addPayment(Payment payment) async {
     await database.insert("payments", payment.toMap()).then((value) {
+      payment.id = value;
       _payments.add(payment);
       notifyListeners();
     });
   }
 
-  /// Deletes one [Payment] from the collection.
+  /// Deletes one [Payment] from the database and updates the collection.
   void deletePayment(int id) async {
     await database
         .delete("payments", where: "id = ?", whereArgs: [id]).then((value) {

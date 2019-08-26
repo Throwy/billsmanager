@@ -1,4 +1,5 @@
-import 'package:billsmanager/models/BIll.dart';
+import 'package:billsmanager/helpers/utilities.dart' as utilities;
+import 'package:billsmanager/models/Bill.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -43,7 +44,7 @@ class BillsState extends Model {
     var list = _bills
         .where((bill) =>
             ((bill.dueOn.millisecondsSinceEpoch >= miliNow) ||
-                _dueToday(bill)) &&
+                utilities.sameDate(bill.dueOn, DateTime.now())) &&
             (bill.dueOn.millisecondsSinceEpoch <= miliExtended) &&
             (!bill.paid))
         .toList();
@@ -58,7 +59,7 @@ class BillsState extends Model {
     var list = _bills
         .where((bill) =>
             (bill.dueOn.millisecondsSinceEpoch < now.millisecondsSinceEpoch) &&
-            !_dueToday(bill))
+            !utilities.sameDate(bill.dueOn, DateTime.now()))
         .toList();
     list.sort((a, b) => a.dueOn.millisecondsSinceEpoch
         .compareTo(b.dueOn.millisecondsSinceEpoch));
@@ -81,21 +82,37 @@ class BillsState extends Model {
     return list;
   }
 
-  /// Adds one [Bill] to the collection.
+  /// Adds one [Bill] to the database and updates the collection.
   void addBill(Bill bill) async {
     await database.insert("bills", bill.toMap()).then((value) {
+      bill.id = value;
       _bills.add(bill);
       notifyListeners();
     });
   }
 
-  /// Adds multiple [Bill]s to the collection.
+  /// Adds multiple [Bill]s to the database and updates the collection.
   void addBills(List<Bill> bills) {
     _bills.addAll(bills);
     notifyListeners();
   }
 
-  /// Deletes a single [Bill] from the collection.
+  /// Sets the value of paid to [true] for the specified [Bill] in the database.
+  Future<void> payFullAmount(Bill bill) async {
+    await database.transaction((txn) async {
+      await txn.update(
+        "bills",
+        {'paid': 1},
+        where: 'id = ?',
+        whereArgs: [bill.id],
+      );
+    }).then((value) {
+      _bills.firstWhere((bill) => bill.id == bill.id).paid = true;
+      notifyListeners();
+    });
+  }
+
+  /// Deletes a single [Bill] from the database and updates the collection.
   void deleteBill(int id) async {
     await database
         .delete("bills", where: 'id = ?', whereArgs: [id]).then((value) {
@@ -104,18 +121,10 @@ class BillsState extends Model {
     });
   }
 
-  /// Deletes multiple [Bill]s from the collection.
+  /// Deletes multiple [Bill]s from the database and updates the collection.
   void deleteBills(List<int> ids) {
     _bills.removeWhere((bill) => ids.contains(bill.id));
     notifyListeners();
-  }
-
-  /// Determines if the given [Bill] is due today.
-  bool _dueToday(Bill bill) {
-    DateTime now = DateTime.now();
-    return (bill.dueOn.year == now.year) &&
-        (bill.dueOn.month == now.month) &&
-        (bill.dueOn.day == now.day);
   }
 
   /// Helper function to call from anywhere in the tree.

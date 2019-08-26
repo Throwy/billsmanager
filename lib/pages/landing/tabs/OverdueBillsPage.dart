@@ -1,8 +1,7 @@
+import 'package:billsmanager/pages/landing/tabs/BillItem.dart';
 import 'package:billsmanager/store/BillsState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-
-import 'BillItem.dart';
 
 class OverdueBillsPage extends StatelessWidget {
   @override

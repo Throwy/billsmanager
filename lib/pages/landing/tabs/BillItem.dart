@@ -1,5 +1,11 @@
-import 'package:billsmanager/models/BIll.dart';
+import 'package:billsmanager/helpers/utilities.dart' as utilities;
+import 'package:billsmanager/models/Bill.dart';
+import 'package:billsmanager/models/Payment.dart';
+import 'package:billsmanager/store/BillsState.dart';
+import 'package:billsmanager/store/PaymentsState.dart';
+
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class BillItem extends StatelessWidget {
   final Bill bill;
@@ -9,10 +15,18 @@ class BillItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool sameDate = utilities.sameDate(bill.dueOn, DateTime.now());
+    String subTitle = utilities.billItemDueInSubtitle(bill.dueOn);
+
+    if (sameDate) {
+      subTitle = "Today  >  Pay Today";
+    } else if (overDue) {
+      subTitle = "Overdue  >  Pay Now!";
+    }
+
     return Container(
       margin: EdgeInsets.fromLTRB(0, 5.0, 0.0, 5.0),
       width: MediaQuery.of(context).size.width,
-      //height: 120.0,
       child: Card(
         shape: overDue
             ? RoundedRectangleBorder(
@@ -51,7 +65,7 @@ class BillItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${bill.dueOn.month}/${bill.dueOn.day}/${bill.dueOn.year}  >  Pay Now",
+                      subTitle,
                       style: TextStyle(
                         color: Theme.of(context)
                             .textTheme
@@ -72,6 +86,7 @@ class BillItem extends StatelessWidget {
                     ),
                   ),
                   RaisedButton(
+                    splashColor: Colors.teal,
                     child: Text(
                       "Pay",
                       style: TextStyle(
@@ -84,17 +99,29 @@ class BillItem extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text("Pay full amount?"),
+                            title: Text("Pay full amount? \$${bill.amountDue}"),
                             actions: <Widget>[
                               Row(
                                 children: <Widget>[
                                   FlatButton(
                                     child: Text("CANCEL"),
-                                    onPressed: () => print("cancel"),
+                                    onPressed: () => Navigator.pop(context),
                                   ),
                                   FlatButton(
                                     child: Text("PAY"),
-                                    onPressed: () => print("pay all"),
+                                    onPressed: () {
+                                      ScopedModel.of<BillsState>(context)
+                                          .payFullAmount(bill)
+                                          .then((value) {
+                                        ScopedModel.of<PaymentsState>(context)
+                                            .addPayment(Payment.withValues(
+                                                null,
+                                                bill.id,
+                                                bill.amountDue,
+                                                DateTime.now()));
+                                        Navigator.pop(context);
+                                      });
+                                    },
                                   ),
                                 ],
                               ),
