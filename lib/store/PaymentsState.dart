@@ -21,11 +21,11 @@ class PaymentsState extends Model {
   ///
   /// This should only be called once, ie. when the app is being opened.
   initPaymentsState() async {
-    List<Map<String, dynamic>> res = await database.query("payments");
-    _payments = res.isNotEmpty
-        ? res.map((payment) => Payment.fromMap(payment)).toList()
-        : [];
-    return this;
+    // List<Map<String, dynamic>> res = await database.query("payments");
+    // _payments = res.isNotEmpty
+    //     ? res.map((payment) => Payment.fromMap(payment)).toList()
+    //     : [];
+    // return this;
   }
 
   /// Gets all of the [Payment]s.
