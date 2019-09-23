@@ -2,7 +2,6 @@ import 'package:billsmanager/models/Payment.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:sembast/sembast.dart';
-// import 'package:sqflite/sqflite.dart';
 
 /// Models the app state regarding payments.
 ///
@@ -22,11 +21,12 @@ class PaymentsState extends Model {
   ///
   /// This should only be called once, ie. when the app is being opened.
   initPaymentsState() async {
-    var store = intMapStoreFactory.store("payments");
+    var store = intMapStoreFactory.store('payments');
     var res = await store.find(database, finder: Finder());
     _payments = res.isNotEmpty
-        ? res.map((payment) => Payment.fromMap(payment.value)).toList()
+        ? res.map((payment) => Payment.fromMap(payment)).toList()
         : [];
+    print(payments);
     return this;
   }
 
@@ -46,11 +46,16 @@ class PaymentsState extends Model {
 
   /// Adds one [Payment] to the database and updates the collection.
   void addPayment(Payment payment) async {
-    // await database.insert("payments", payment.toMap()).then((value) {
-    //   payment.id = value;
-    //   _payments.add(payment);
-    //   notifyListeners();
-    // });
+    var store = intMapStoreFactory.store('payments');
+    
+    int paymentKey;
+    await database.transaction((trans) async {
+      paymentKey = await store.add(trans, payment.toMap());
+    }).then((res) {
+      payment.id = paymentKey;
+      _payments.add(payment);
+      notifyListeners();
+    });
   }
 
   /// Deletes one [Payment] from the database and updates the collection.

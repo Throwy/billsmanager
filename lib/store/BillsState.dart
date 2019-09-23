@@ -3,7 +3,6 @@ import 'package:billsmanager/models/Bill.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:sembast/sembast.dart';
-//import 'package:sqflite/sqflite.dart';
 
 /// Models the app state regarding bills.
 ///
@@ -23,11 +22,11 @@ class BillsState extends Model {
   ///
   /// This should only be called once, ie. when the app is being opened.
   initBillsState() async {
-    var store = intMapStoreFactory.store("bills");
+    var store = intMapStoreFactory.store('bills');
     var res = await store.find(database, finder: Finder());
 
     _bills = res.isNotEmpty
-        ? res.map((bill) => Bill.fromMap(bill.value)).toList()
+        ? res.map((bill) => Bill.fromMap(bill)).toList()
         : [];
     return this;
   }
@@ -109,17 +108,15 @@ class BillsState extends Model {
 
   /// Sets the value of paid to [true] for the specified [Bill] in the database.
   Future<void> payFullAmount(Bill bill) async {
-    // await database.transaction((txn) async {
-    //   await txn.update(
-    //     "bills",
-    //     {'paid': 1},
-    //     where: 'id = ?',
-    //     whereArgs: [bill.id],
-    //   );
-    // }).then((value) {
-    //   _bills.firstWhere((bill) => bill.id == bill.id).paid = true;
-    //   notifyListeners();
-    // });
+    var store = intMapStoreFactory.store('bills');
+    var record = store.record(bill.id);
+
+    await database.transaction((trans) async {
+      await record.update(trans, {'paid': 1});
+    }).then((res) {
+      _bills.firstWhere((b) => b.id == bill.id).paid = true;
+      notifyListeners();
+    });
   }
 
   /// Deletes a single [Bill] from the database and updates the collection.

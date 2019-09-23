@@ -1,5 +1,7 @@
+import 'package:sembast/sembast.dart';
+
 /// Describes the attributes of a payment.
-/// 
+///
 /// Every payment must be associated with a [Bill] with the property [billId];
 class Payment {
   int id;
@@ -26,10 +28,12 @@ class Payment {
   }
 
   /// Converts database read results into a [Payment] object.
-  Payment.fromMap(Map<String, dynamic> map) {
-    id = map["id"];
-    billId = map["bill_id"];
-    amountPaid = map["amount_paid"];
-    paidOn = DateTime.fromMillisecondsSinceEpoch(map["paid_on"]);
+  Payment.fromMap(RecordSnapshot<int, Map<String, dynamic>> snapshot) {
+    var fields = snapshot.value;
+
+    id = snapshot.key;
+    billId = fields["bill_id"];
+    amountPaid = fields["amount_paid"];
+    paidOn = DateTime.fromMillisecondsSinceEpoch(fields["paid_on"]);
   }
 }

@@ -112,7 +112,7 @@ class BillItem extends StatelessWidget {
                                     onPressed: () {
                                       ScopedModel.of<BillsState>(context)
                                           .payFullAmount(bill)
-                                          .then((value) {
+                                          .then((res) {
                                         ScopedModel.of<PaymentsState>(context)
                                             .addPayment(Payment.withValues(
                                                 null,

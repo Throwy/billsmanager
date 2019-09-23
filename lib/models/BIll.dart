@@ -1,3 +1,5 @@
+import 'package:sembast/sembast.dart';
+
 /// Describes the attributes of a bill.
 /// 
 /// Every bill has a due date and amount that's due. This class is for easily
@@ -52,17 +54,19 @@ class Bill {
   }
 
   /// Converts database read results into a [Bill] object.
-  Bill.fromMap(Map<String, dynamic> map) {
-    id = map["id"];
-    billType = map["bill_type"];
-    title = map["title"];
-    dueOn = DateTime.fromMillisecondsSinceEpoch(map["due_on"]);
-    amountDue = map["amount_due"];
-    reminder = map["reminder"] == 1;
-    reminderPeriod = map["reminder_period"];
-    repeats = map["repeats"] == 1;
-    repeatPeriod = map["repeat_period"];
-    notes = map["notes"];
-    paid = map["paid"] == 1;
+  Bill.fromMap(RecordSnapshot<int, Map<String, dynamic>> snapshot) {
+    var fields = snapshot.value;
+
+    id = snapshot.key;
+    billType = fields["bill_type"];
+    title = fields["title"];
+    dueOn = DateTime.fromMillisecondsSinceEpoch(fields["due_on"]);
+    amountDue = fields["amount_due"];
+    reminder = fields["reminder"] == 1;
+    reminderPeriod = fields["reminder_period"];
+    repeats = fields["repeats"] == 1;
+    repeatPeriod = fields["repeat_period"];
+    notes = fields["notes"];
+    paid = fields["paid"] == 1;
   }
 }
