@@ -1,15 +1,15 @@
 import 'dart:io';
+import 'dart:async';
 
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
-import 'package:sembast/sembast_memory.dart';
 
-class NoSQLProvider {
-  NoSQLProvider._();
+class DBProvider {
+  DBProvider._();
 
-  static final NoSQLProvider db = NoSQLProvider._();
+  static final DBProvider db = DBProvider._();
 
   static Database _database;
 
@@ -27,11 +27,12 @@ class NoSQLProvider {
 
     try {
       await docsDir.create(recursive: true);
-    } catch (_) {
+      String dbPath = join(docsDir.path, 'bills_manager.db');
+      return await databaseFactoryIo.openDatabase(dbPath);
+    } catch (e, _) {
+      print(e);
+      print("\n");
       print(_);
     }
-    String dbPath = join(docsDir.path, 'bills_manager.db');
-
-    return await createDatabaseFactoryIo().openDatabase(dbPath);
   }
 }

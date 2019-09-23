@@ -1,7 +1,8 @@
 import 'package:billsmanager/models/Payment.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sembast/sembast.dart';
+// import 'package:sqflite/sqflite.dart';
 
 /// Models the app state regarding payments.
 ///
@@ -21,11 +22,12 @@ class PaymentsState extends Model {
   ///
   /// This should only be called once, ie. when the app is being opened.
   initPaymentsState() async {
-    // List<Map<String, dynamic>> res = await database.query("payments");
-    // _payments = res.isNotEmpty
-    //     ? res.map((payment) => Payment.fromMap(payment)).toList()
-    //     : [];
-    // return this;
+    var store = intMapStoreFactory.store("payments");
+    var res = await store.find(database, finder: Finder());
+    _payments = res.isNotEmpty
+        ? res.map((payment) => Payment.fromMap(payment.value)).toList()
+        : [];
+    return this;
   }
 
   /// Gets all of the [Payment]s.
@@ -44,20 +46,20 @@ class PaymentsState extends Model {
 
   /// Adds one [Payment] to the database and updates the collection.
   void addPayment(Payment payment) async {
-    await database.insert("payments", payment.toMap()).then((value) {
-      payment.id = value;
-      _payments.add(payment);
-      notifyListeners();
-    });
+    // await database.insert("payments", payment.toMap()).then((value) {
+    //   payment.id = value;
+    //   _payments.add(payment);
+    //   notifyListeners();
+    // });
   }
 
   /// Deletes one [Payment] from the database and updates the collection.
   void deletePayment(int id) async {
-    await database
-        .delete("payments", where: "id = ?", whereArgs: [id]).then((value) {
-      _payments.removeWhere((payment) => payment.id == id);
-      notifyListeners();
-    });
+    // await database
+    //     .delete("payments", where: "id = ?", whereArgs: [id]).then((value) {
+    //   _payments.removeWhere((payment) => payment.id == id);
+    //   notifyListeners();
+    // });
   }
 
   /// Helper function to call from anywhere in the tree.
