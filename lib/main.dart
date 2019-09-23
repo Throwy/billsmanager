@@ -10,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  //var db = await DBProvider.db.database;
   var db = await DBProvider.db.database;
   runApp(App(
     themeState: await ThemeState(preferences: preferences).initThemeState(),

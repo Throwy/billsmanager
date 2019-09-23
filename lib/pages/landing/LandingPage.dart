@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:billsmanager/models/DrawerItem.dart';
 import 'package:billsmanager/pages/about/AboutPage.dart';
 import 'package:billsmanager/pages/bills/BillsPage.dart';
@@ -7,7 +8,9 @@ import 'package:billsmanager/pages/history/HistoryPage.dart';
 import 'package:billsmanager/pages/landing/tabs/OverdueBillsPage.dart';
 import 'package:billsmanager/pages/landing/tabs/UpcomingBillsPage.dart';
 import 'package:billsmanager/pages/settings/SettingsPage.dart';
+import 'package:billsmanager/store/BillsState.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({Key key, this.title}) : super(key: key);
@@ -58,9 +61,6 @@ class LandingPageState extends State<LandingPage> {
         child: Column(
           children: <Widget>[
             DrawerHeader(
-              // decoration: BoxDecoration(
-              //   color: Theme.of(context).primaryColor,
-              // ),
               margin: EdgeInsets.zero,
               child: Center(
                 child: Text("Bills Manager"),
@@ -75,41 +75,84 @@ class LandingPageState extends State<LandingPage> {
           ],
         ),
       ),
-      body: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(kToolbarHeight),
-            child: Container(
-              color: Theme.of(context).primaryColorDark,
-              child: SafeArea(
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(),
-                    ),
-                    TabBar(
-                      tabs: <Widget>[
-                        Tab(
-                          text: "Upcoming",
+      body: ScopedModelDescendant<BillsState>(
+        builder: (context, child, model) {
+          var upcomingBills = model.getUpcomingBills();
+          var overdueBills = model.getOverdueBills();
+
+          return DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(kToolbarHeight),
+                child: Container(
+                  color: Theme.of(context).primaryColorDark,
+                  child: SafeArea(
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(),
                         ),
-                        Tab(
-                          text: "Overdue",
-                        ),
+                        TabBar(
+                          tabs: <Widget>[
+                            Tab(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Upcoming"),
+                                  Badge(
+                                    badgeContent: Text(
+                                      upcomingBills.length.toString(),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .accentTextTheme
+                                              .button
+                                              .color),
+                                    ),
+                                    badgeColor: Theme.of(context).accentColor,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Tab(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Overdue"),
+                                  Badge(
+                                    badgeContent: Text(
+                                      overdueBills.length.toString(),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .accentTextTheme
+                                              .button
+                                              .color),
+                                    ),
+                                    badgeColor: Theme.of(context).accentColor,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               ),
+              body: TabBarView(
+                children: <Widget>[
+                  UpcomingBillsPage(
+                    upcomingBills: upcomingBills,
+                  ),
+                  OverdueBillsPage(
+                    overdueBills: overdueBills,
+                  ),
+                ],
+              ),
             ),
-          ),
-          body: TabBarView(
-            children: <Widget>[
-              UpcomingBillsPage(),
-              OverdueBillsPage(),
-            ],
-          ),
-        ),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showModalBottomSheet(
