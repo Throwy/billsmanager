@@ -86,6 +86,12 @@ class BillsState extends Model {
     return list;
   }
 
+  /// Gets all [Bill]s that are due on the specified date.
+  List<Bill> getBillsByDate(DateTime date) {
+    var list = _bills.where((bill) => utilities.sameDate(bill.dueOn, date)).toList();
+    return list;
+  }
+
   /// Adds one [Bill] to the database and updates the collection.
   void addBill(Bill bill) async {
     var store = intMapStoreFactory.store("bills");
