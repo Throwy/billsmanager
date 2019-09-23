@@ -10,12 +10,19 @@ class PaidBillsPage extends StatelessWidget {
         return ListView(
           children: model
               .getPaidBills()
-              .map((bill) => ListTile(
-                    leading: Icon(Icons.payment),
-                    title: Text(bill.billType),
-                    subtitle: Text(
-                        "${bill.dueOn.month}/${bill.dueOn.day}/${bill.dueOn.year}"),
-                  ))
+              .map(
+                (bill) => Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(Icons.payment),
+                      title: Text(bill.billType),
+                      subtitle: Text(
+                          "${bill.dueOn.month}/${bill.dueOn.day}/${bill.dueOn.year}"),
+                    ),
+                    Divider(),
+                  ],
+                ),
+              )
               .toList(),
         );
       },

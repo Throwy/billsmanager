@@ -26,7 +26,6 @@ class PaymentsState extends Model {
     _payments = res.isNotEmpty
         ? res.map((payment) => Payment.fromMap(payment)).toList()
         : [];
-    print(payments);
     return this;
   }
 

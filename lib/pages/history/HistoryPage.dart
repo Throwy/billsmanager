@@ -12,19 +12,21 @@ class HistoryPage extends StatelessWidget {
       body: ScopedModelDescendant<PaymentsState>(
         builder: (context, child, model) {
           return ListView(
-            children: <Widget>[
-              Column(
-                children: model.payments
-                    .map(
-                      (payment) => ListTile(
+            children: model.payments
+                .map(
+                  (payment) => Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: Icon(Icons.payment),
                         title: Text("\$${payment.amountPaid}"),
-                        subtitle: Text(payment.paidOn.toLocal().toString()),
+                        subtitle: Text(
+                            "${payment.paidOn.month}/${payment.paidOn.day}/${payment.paidOn.year}"),
                       ),
-                    )
-                    .toList(),
-              ),
-              Divider(),
-            ],
+                      Divider(),
+                    ],
+                  ),
+                )
+                .toList(),
           );
         },
       ),
