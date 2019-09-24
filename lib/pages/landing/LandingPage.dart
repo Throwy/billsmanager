@@ -2,7 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:billsmanager/models/DrawerItem.dart';
 import 'package:billsmanager/pages/about/AboutPage.dart';
 import 'package:billsmanager/pages/bills/BillsPage.dart';
-import 'package:billsmanager/pages/entryforms/CreateBillPage.dart';
+import 'package:billsmanager/pages/entryforms/BillFormPage.dart';
 import 'package:billsmanager/pages/entryforms/CreatePaymentPage.dart';
 import 'package:billsmanager/pages/history/HistoryPage.dart';
 import 'package:billsmanager/pages/landing/tabs/OverdueBillsPage.dart';
@@ -193,7 +193,9 @@ class LandingPageState extends State<LandingPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CreateBillPage(),
+                        builder: (context) => BillFormPage(
+                          title: "Add Bill",
+                        ),
                       ),
                     );
                   },

@@ -22,7 +22,9 @@ class HistoryPage extends StatelessWidget {
                         subtitle: Text(
                             "${payment.paidOn.month}/${payment.paidOn.day}/${payment.paidOn.year}"),
                       ),
-                      Divider(),
+                      Divider(
+                        height: 0.0,
+                      ),
                     ],
                   ),
                 )

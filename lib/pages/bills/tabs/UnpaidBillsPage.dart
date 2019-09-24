@@ -1,4 +1,5 @@
 import 'package:billsmanager/helpers/utilities.dart' as utilities;
+import 'package:billsmanager/pages/shared/BillDetailsPage.dart';
 import 'package:billsmanager/store/BillsState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -33,8 +34,20 @@ class UnpaidBillsPage extends StatelessWidget {
                   subtitle: Text(
                     subTitle,
                   ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BillDetailsPage(
+                          bill: bill,
+                        ),
+                      ),
+                    );
+                  },
                 ),
-                Divider(),
+                Divider(
+                  height: 0.0,
+                ),
               ],
             );
           }).toList(),

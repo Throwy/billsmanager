@@ -7,13 +7,16 @@ import 'package:billsmanager/models/DropDownItems.Dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class CreateBillPage extends StatefulWidget {
-  CreateBillPageState createState() => new CreateBillPageState();
+class BillFormPage extends StatefulWidget {
+  final String title;
+
+  const BillFormPage({Key key, @required this.title}) : super(key: key);
+
+  BillFormPageState createState() => new BillFormPageState();
 }
 
-class CreateBillPageState extends State<CreateBillPage> {
+class BillFormPageState extends State<BillFormPage> {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
-  final String _title = "Add Bill";
   Bill _newBill = new Bill();
 
   @override
@@ -26,7 +29,7 @@ class CreateBillPageState extends State<CreateBillPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_title),
+        title: Text(widget.title),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
@@ -100,7 +103,7 @@ class CreateBillPageState extends State<CreateBillPage> {
                   validators: [
                     FormBuilderValidators.required(),
                   ],
-                  format: DateFormat("MM-dd-yyyy"),
+                  format: DateFormat("yMd"),
                   decoration: InputDecoration(
                     labelText: "Due On",
                   ),

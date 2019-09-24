@@ -1,4 +1,5 @@
 import 'package:billsmanager/helpers/Events/EventList.dart';
+import 'package:billsmanager/pages/shared/BillDetailsPage.dart';
 import 'package:billsmanager/store/BillsState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -130,12 +131,24 @@ class CalendarPageState extends State<CalendarPage>
               padding: EdgeInsets.all(5.0),
               width: MediaQuery.of(context).size.width,
               child: Card(
-                child: Container(
-                  child: ListTile(
-                    title: Text(b.title),
-                    trailing: Text("\$${b.amountDue}"),
-                    subtitle: Text(b.billType),
-                    onTap: () => print('${b.title} tapped'),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BillDetailsPage(
+                          bill: b,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    child: ListTile(
+                      title: Text(b.title),
+                      trailing: Text("\$${b.amountDue}"),
+                      subtitle: Text(b.billType),
+                      //onTap: () => print('${b.title} tapped'),
+                    ),
                   ),
                 ),
               ),

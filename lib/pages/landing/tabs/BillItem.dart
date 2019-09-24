@@ -1,6 +1,7 @@
 import 'package:billsmanager/helpers/utilities.dart' as utilities;
 import 'package:billsmanager/models/Bill.dart';
 import 'package:billsmanager/models/Payment.dart';
+import 'package:billsmanager/pages/shared/BillDetailsPage.dart';
 import 'package:billsmanager/store/BillsState.dart';
 import 'package:billsmanager/store/PaymentsState.dart';
 
@@ -28,112 +29,127 @@ class BillItem extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(0, 5.0, 0.0, 5.0),
       width: MediaQuery.of(context).size.width,
       child: Card(
+        borderOnForeground: false,
         shape: overDue
             ? RoundedRectangleBorder(
                 side: BorderSide(
                   color: Colors.red,
-                  width: 2.0,
+                  width: 1.0,
                 ),
                 borderRadius: BorderRadius.circular(4.0),
               )
             : RoundedRectangleBorder(
                 side: BorderSide(
                   color: Theme.of(context).cardColor,
-                  width: 2.0,
+                  width: 1.0,
                 ),
                 borderRadius: BorderRadius.circular(4.0),
               ),
-        child: Container(
-          padding: EdgeInsets.all(10.0),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(4.0),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BillDetailsPage(
+                  bill: bill,
+                ),
+              ),
+            );
+          },
+          child: Container(
+            padding: EdgeInsets.all(10.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        bill.title,
+                        style: TextStyle(
+                          fontSize: 22.0,
+                        ),
+                      ),
+                      Text(
+                        bill.billType,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      Text(
+                        subTitle,
+                        style: TextStyle(
+                          color: Theme.of(context)
+                              .textTheme
+                              .subtitle
+                              .color
+                              .withOpacity(0.6),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
                   children: <Widget>[
                     Text(
-                      bill.title,
+                      "\$${bill.amountDue}",
                       style: TextStyle(
-                        fontSize: 22.0,
+                        fontSize: 18.0,
                       ),
                     ),
-                    Text(
-                      bill.billType,
-                      style: TextStyle(
-                        fontSize: 16.0,
+                    RaisedButton(
+                      splashColor: Colors.teal,
+                      child: Text(
+                        "Pay",
+                        style: TextStyle(
+                          color: Theme.of(context).accentTextTheme.button.color,
+                        ),
                       ),
-                    ),
-                    Text(
-                      subTitle,
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .textTheme
-                            .subtitle
-                            .color
-                            .withOpacity(0.6),
-                      ),
+                      color: Theme.of(context).accentColor,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title:
+                                  Text("Pay full amount? \$${bill.amountDue}"),
+                              actions: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    FlatButton(
+                                      child: Text("CANCEL"),
+                                      onPressed: () => Navigator.pop(context),
+                                    ),
+                                    FlatButton(
+                                      child: Text("PAY"),
+                                      onPressed: () {
+                                        ScopedModel.of<BillsState>(context)
+                                            .payFullAmount(bill)
+                                            .then((res) {
+                                          ScopedModel.of<PaymentsState>(context)
+                                              .addPayment(Payment.withValues(
+                                                  null,
+                                                  bill.id,
+                                                  bill.amountDue,
+                                                  DateTime.now()));
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),
-              ),
-              Column(
-                children: <Widget>[
-                  Text(
-                    "\$${bill.amountDue}",
-                    style: TextStyle(
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  RaisedButton(
-                    splashColor: Colors.teal,
-                    child: Text(
-                      "Pay",
-                      style: TextStyle(
-                        color: Theme.of(context).accentTextTheme.button.color,
-                      ),
-                    ),
-                    color: Theme.of(context).accentColor,
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("Pay full amount? \$${bill.amountDue}"),
-                            actions: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  FlatButton(
-                                    child: Text("CANCEL"),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                                  FlatButton(
-                                    child: Text("PAY"),
-                                    onPressed: () {
-                                      ScopedModel.of<BillsState>(context)
-                                          .payFullAmount(bill)
-                                          .then((res) {
-                                        ScopedModel.of<PaymentsState>(context)
-                                            .addPayment(Payment.withValues(
-                                                null,
-                                                bill.id,
-                                                bill.amountDue,
-                                                DateTime.now()));
-                                        Navigator.pop(context);
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
