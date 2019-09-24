@@ -37,10 +37,18 @@ class BillsPage extends StatelessWidget {
                     TabBar(
                       tabs: <Widget>[
                         Tab(
-                          text: "Unpaid",
+                          child: Text(
+                            "Unpaid",
+                            style: TextStyle()
+                                .copyWith(fontWeight: FontWeight.bold),
+                          ),
                         ),
                         Tab(
-                          text: "Paid",
+                          child: Text(
+                            "Paid",
+                            style: TextStyle()
+                                .copyWith(fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ],
                     )

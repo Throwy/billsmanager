@@ -99,19 +99,29 @@ class LandingPageState extends State<LandingPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text("Upcoming"),
-                                  Badge(
-                                    badgeContent: Text(
-                                      upcomingBills.length.toString(),
-                                      style: TextStyle(
+                                  Text(
+                                    "Upcoming",
+                                    style: TextStyle()
+                                        .copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 5.0),
+                                    child: Badge(
+                                      badgeContent: Text(
+                                        upcomingBills.length.toString(),
+                                        style: TextStyle().copyWith(
                                           color: Theme.of(context)
                                               .accentTextTheme
                                               .button
-                                              .color),
+                                              .color,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      badgeColor: Theme.of(context).accentColor,
+                                      animationType: BadgeAnimationType.scale,
+                                      animationDuration:
+                                          Duration(milliseconds: 150),
                                     ),
-                                    badgeColor: Theme.of(context).accentColor,
-                                    animationType: BadgeAnimationType.scale,
-                                    animationDuration: Duration(milliseconds: 150),
                                   ),
                                 ],
                               ),
@@ -120,19 +130,29 @@ class LandingPageState extends State<LandingPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text("Overdue"),
-                                  Badge(
-                                    badgeContent: Text(
-                                      overdueBills.length.toString(),
-                                      style: TextStyle(
+                                  Text(
+                                    "Overdue",
+                                    style: TextStyle()
+                                        .copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 5.0),
+                                    child: Badge(
+                                      badgeContent: Text(
+                                        overdueBills.length.toString(),
+                                        style: TextStyle().copyWith(
                                           color: Theme.of(context)
                                               .accentTextTheme
                                               .button
-                                              .color),
+                                              .color,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      badgeColor: Theme.of(context).accentColor,
+                                      animationType: BadgeAnimationType.scale,
+                                      animationDuration:
+                                          Duration(milliseconds: 150),
                                     ),
-                                    badgeColor: Theme.of(context).accentColor,
-                                    animationType: BadgeAnimationType.scale,
-                                    animationDuration: Duration(milliseconds: 150),
                                   ),
                                 ],
                               ),
