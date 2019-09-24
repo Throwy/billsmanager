@@ -1,10 +1,10 @@
-// import 'package:billsmanager/helpers/DBProvider.dart';
-import 'package:billsmanager/helpers/NoSQLProvider.dart';
+import 'package:billsmanager/helpers/DBProvider.dart';
 import 'package:billsmanager/pages/landing/LandingPage.dart';
 import 'package:billsmanager/store/BillsState.dart';
 import 'package:billsmanager/store/PaymentsState.dart';
 import 'package:billsmanager/store/ThemeState.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,6 +32,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return ScopedModel<ThemeState>(
       model: themeState,
       child: ScopedModel<BillsState>(
