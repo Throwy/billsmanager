@@ -17,7 +17,7 @@ class PaymentsState extends Model {
     _payments = new List<Payment>();
   }
 
-  /// Intializes the [PaymentsState] class.
+  /// Intializes the `PaymentsState` class.
   ///
   /// This should only be called once, ie. when the app is being opened.
   initPaymentsState() async {
@@ -29,21 +29,21 @@ class PaymentsState extends Model {
     return this;
   }
 
-  /// Gets all of the [Payment]s.
+  /// Gets all of the `Payment`s.
   List<Payment> get payments => _payments;
 
-  /// Returns a [Payment] from the collection with the given [id].
+  /// Returns a `Payment` from the collection with the given [id].
   Payment getPayment(int id) {
     return _payments.firstWhere((payment) => payment.id == id);
   }
 
-  /// Returns a [List<Payment>] for the given [Bill].[id].
+  /// Returns a `List<Payment>` for the given [billid].
   List<Payment> getPaymentsByBill(int billId) {
     var list = _payments.where((payment) => payment.billId == billId).toList();
     return list;
   }
 
-  /// Adds one [Payment] to the database and updates the collection.
+  /// Adds one `Payment` to the database and updates the collection.
   void addPayment(Payment payment) async {
     var store = intMapStoreFactory.store('payments');
     
@@ -57,7 +57,7 @@ class PaymentsState extends Model {
     });
   }
 
-  /// Deletes one [Payment] from the database and updates the collection.
+  /// Deletes one `Payment` from the database and updates the collection.
   void deletePayment(int id) async {
     // await database
     //     .delete("payments", where: "id = ?", whereArgs: [id]).then((value) {

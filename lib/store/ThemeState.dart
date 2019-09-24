@@ -11,7 +11,7 @@ class ThemeState extends Model {
 
   ThemeState({Key key, @required this.preferences});
 
-  /// Initializes the [ThemeState] class.
+  /// Initializes the `ThemeState` class.
   ///
   /// This should only be called once, ie. when the app is being opened.
   initThemeState() async {
@@ -28,10 +28,10 @@ class ThemeState extends Model {
     return this;
   }
 
-  /// Gets the app [Brightness].
+  /// Gets the app `Brightness`.
   Brightness get brightness => _brightness;
 
-  /// Changes the brightness of the app to the given [Brightness].
+  /// Changes the brightness of the app to the given `Brightness`.
   /// This value is saved in the SharedPreferences location.
   void changeBrightness(Brightness brightness) {
     _brightness = brightness;

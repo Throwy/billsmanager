@@ -18,7 +18,7 @@ class BillsState extends Model {
     _bills = new List<Bill>();
   }
 
-  /// Initializes the [BillsState] class.
+  /// Initializes the `BillsState` class.
   ///
   /// This should only be called once, ie. when the app is being opened.
   initBillsState() async {
@@ -31,15 +31,15 @@ class BillsState extends Model {
     return this;
   }
 
-  /// Gets all of the [Bill]s.
+  /// Gets all of the `Bill`s.
   List<Bill> get bills => _bills;
 
-  /// Gets a [Bill] from the collection with the given [id].
+  /// Gets a `Bill` from the collection with the given [id].
   Bill getBill(int id) {
     return _bills.firstWhere((bill) => bill.id == id);
   }
 
-  /// Gets all upcoming [Bill]s, including ones due today.
+  /// Gets all upcoming `Bill`s, including ones due today.
   List<Bill> getUpcomingBills() {
     var miliNow = DateTime.now().millisecondsSinceEpoch;
     var miliExtended =
@@ -56,7 +56,7 @@ class BillsState extends Model {
     return list;
   }
 
-  /// Gets all overdue [Bill]s.
+  /// Gets all overdue `Bill`s.
   List<Bill> getOverdueBills() {
     DateTime now = DateTime.now();
     var list = _bills
@@ -70,7 +70,7 @@ class BillsState extends Model {
     return list;
   }
 
-  /// Gets all unpaid [Bill]s.
+  /// Gets all unpaid `Bill`s.
   List<Bill> getUnpaidBills() {
     var list = _bills.where((bill) => !bill.paid).toList();
     list.sort((a, b) => a.dueOn.millisecondsSinceEpoch
@@ -78,7 +78,7 @@ class BillsState extends Model {
     return list;
   }
 
-  /// Gets all paid [Bill]s.
+  /// Gets all paid `Bill`s.
   List<Bill> getPaidBills() {
     var list = _bills.where((bill) => bill.paid).toList();
     list.sort((a, b) => a.dueOn.millisecondsSinceEpoch
@@ -86,13 +86,13 @@ class BillsState extends Model {
     return list;
   }
 
-  /// Gets all [Bill]s that are due on the specified date.
+  /// Gets all `Bill`s that are due on the specified date.
   List<Bill> getBillsByDate(DateTime date) {
     var list = _bills.where((bill) => utilities.sameDate(bill.dueOn, date)).toList();
     return list;
   }
 
-  /// Adds one [Bill] to the database and updates the collection.
+  /// Adds one `Bill` to the database and updates the collection.
   void addBill(Bill bill) async {
     var store = intMapStoreFactory.store("bills");
 
@@ -106,13 +106,13 @@ class BillsState extends Model {
     });
   }
 
-  /// Adds multiple [Bill]s to the database and updates the collection.
+  /// Adds multiple `Bill`s to the database and updates the collection.
   void addBills(List<Bill> bills) {
     _bills.addAll(bills);
     notifyListeners();
   }
 
-  /// Sets the value of paid to [true] for the specified [Bill] in the database.
+  /// Sets the value of paid to `true` for the specified `Bill` in the database.
   Future<void> payFullAmount(Bill bill) async {
     var store = intMapStoreFactory.store('bills');
     var record = store.record(bill.id);
@@ -125,7 +125,7 @@ class BillsState extends Model {
     });
   }
 
-  /// Deletes a single [Bill] from the database and updates the collection.
+  /// Deletes a single `Bill` from the database and updates the collection.
   void deleteBill(int id) async {
     // await database
     //     .delete("bills", where: 'id = ?', whereArgs: [id]).then((value) {
@@ -134,7 +134,7 @@ class BillsState extends Model {
     // });
   }
 
-  /// Deletes multiple [Bill]s from the database and updates the collection.
+  /// Deletes multiple `Bill`s from the database and updates the collection.
   void deleteBills(List<int> ids) {
     _bills.removeWhere((bill) => ids.contains(bill.id));
     notifyListeners();

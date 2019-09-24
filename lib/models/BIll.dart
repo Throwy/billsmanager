@@ -32,7 +32,7 @@ class Bill {
       this.notes,
       this.paid);
 
-  /// Converts [Bill] object into a [Map<String, dynamic>] for writing to the
+  /// Converts `Bill` object into a `Map<String, dynamic>` for writing to the
   /// database.
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
@@ -53,7 +53,7 @@ class Bill {
     return map;
   }
 
-  /// Converts database read results into a [Bill] object.
+  /// Converts database read results into a `Bill` object.
   Bill.fromMap(RecordSnapshot<int, Map<String, dynamic>> snapshot) {
     var fields = snapshot.value;
 
