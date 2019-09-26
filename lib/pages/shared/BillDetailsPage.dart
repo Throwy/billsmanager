@@ -5,6 +5,7 @@ import 'package:billsmanager/store/BillsState.dart';
 import 'package:billsmanager/store/PaymentsState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -98,7 +99,8 @@ class BillDetailsPageState extends State<BillDetailsPage> {
           widget.bill.billType,
           style: TextStyle(),
         ),
-        trailing: Text(NumberFormat.simpleCurrency().format(double.parse(widget.bill.amountDue))),
+        trailing: Text(NumberFormat.simpleCurrency()
+            .format(double.parse(widget.bill.amountDue))),
       ),
     );
   }
@@ -146,7 +148,8 @@ class BillDetailsPageState extends State<BillDetailsPage> {
   Widget _buildPaidRow() {
     return Container(
       child: ListTile(
-        title: Text(NumberFormat.simpleCurrency().format(double.parse(widget.bill.amountDue))),
+        title: Text(NumberFormat.simpleCurrency()
+            .format(double.parse(widget.bill.amountDue))),
         subtitle: Text("Paid"),
         trailing: Icon(Icons.check_circle),
       ),
@@ -199,11 +202,26 @@ class BillDetailsPageState extends State<BillDetailsPage> {
         child: ListView(
             children: payments
                 .map(
-                  (p) => ListTile(
-                    title: Text(NumberFormat.simpleCurrency().format(double.parse(p.amountPaid))),
-                    trailing: Text(
-                      DateFormat.yMd().format(p.paidOn),
+                  (p) => Slidable(
+                    key: ValueKey(p.id.toString()),
+                    actionPane: SlidableDrawerActionPane(),
+                    child: ListTile(
+                      title: Text(NumberFormat.simpleCurrency()
+                          .format(double.parse(p.amountPaid))),
+                      trailing: Text(
+                        DateFormat.yMd().format(p.paidOn),
+                      ),
                     ),
+                    secondaryActions: <Widget>[
+                      IconSlideAction(
+                        color: Colors.red,
+                        icon: Icons.delete,
+                        onTap: () {
+                          ScopedModel.of<PaymentsState>(context).deletePayment(p.id);
+                        },
+                      )
+                    ],
+                    closeOnScroll: true,
                   ),
                 )
                 .toList()),

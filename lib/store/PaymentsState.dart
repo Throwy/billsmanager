@@ -58,12 +58,16 @@ class PaymentsState extends Model {
   }
 
   /// Deletes one `Payment` from the database and updates the collection.
-  void deletePayment(int id) async {
-    // await database
-    //     .delete("payments", where: "id = ?", whereArgs: [id]).then((value) {
-    //   _payments.removeWhere((payment) => payment.id == id);
-    //   notifyListeners();
-    // });
+  Future<void> deletePayment(int paymentId) async {
+    var store = intMapStoreFactory.store('payments');
+    var record = store.record(paymentId);
+
+    await database.transaction((trans) async {
+      await record.delete(trans);
+    }).then((res) {
+      _payments.removeWhere((payment) => payment.id == paymentId);
+      notifyListeners();
+    });
   }
 
   /// Helper function to call from anywhere in the tree.
