@@ -14,39 +14,43 @@ class EventList<T> {
 
   /// Adds an event<`T`> to the specified date.
   void add(DateTime date, T event) {
+    var convertedDate = zeroHoursAndMinutes(date);
     if (events == null) {
       events = {
-        date: [event]
+        convertedDate: [event]
       };
-    } else if (!events.containsKey(date)) {
-      events[date] = [event];
+    } else if (!events.containsKey(convertedDate)) {
+      events[convertedDate] = [event];
     } else {
-      events[date].add(event);
+      events[convertedDate].add(event);
     }
   }
 
   /// Adds mutliple events<`List<T>`> to the specified date.
   void addAll(DateTime date, List<T> events) {
+    var convertedDate = zeroHoursAndMinutes(date);
     if (this.events == null) {
-      this.events = {date: events};
-    } else if (!this.events.containsKey(date)) {
-      this.events[date] = events;
+      this.events = {convertedDate: events};
+    } else if (!this.events.containsKey(convertedDate)) {
+      this.events[convertedDate] = events;
     } else {
-      this.events[date].addAll(events);
+      this.events[convertedDate].addAll(events);
     }
   }
 
   /// Removes an event<`T`> from the specified date.
   bool remove(DateTime date, T event) {
-    return events != null && events.containsKey(date)
-        ? events[date].remove(event)
+    var convertedDate = zeroHoursAndMinutes(date);
+    return events != null && events.containsKey(convertedDate)
+        ? events[convertedDate].remove(event)
         : true;
   }
 
   /// Removes all events from the specified date.
   List<T> removeAll(DateTime date) {
-    return events != null && events.containsKey(date)
-        ? events.remove(date)
+    var convertedDate = zeroHoursAndMinutes(date);
+    return events != null && events.containsKey(convertedDate)
+        ? events.remove(convertedDate)
         : [];
   }
 
@@ -61,10 +65,14 @@ class EventList<T> {
 
   /// Returns `List<T>` events for the specified date.
   List<T> getEvents(DateTime date) {
-    return events != null && events.entries.length > 0
-        ? events.entries.firstWhere((entry) {
-            return sameDate(entry.key, date);
-          }).value
+    var convertedDate = zeroHoursAndMinutes(date);
+    return events != null && events.containsKey(convertedDate)
+        ? events[convertedDate]
         : [];
+  }
+
+  /// Returns a new `DateTime` with time zeroed out.
+  DateTime zeroHoursAndMinutes(DateTime date) {
+    return new DateTime(date.year, date.month, date.day);
   }
 }

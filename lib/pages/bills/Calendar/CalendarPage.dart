@@ -132,7 +132,6 @@ class CalendarPageState extends State<CalendarPage>
               ),
             );
           }
-
           return children;
         }
       ),
