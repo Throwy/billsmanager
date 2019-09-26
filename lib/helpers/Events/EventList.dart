@@ -8,7 +8,9 @@ import 'package:billsmanager/helpers/utilities.dart';
 class EventList<T> {
   Map<DateTime, List<T>> events;
 
-  EventList({this.events});
+  EventList() {
+    this.events = new Map<DateTime, List<T>>();
+  }
 
   /// Adds an event<`T`> to the specified date.
   void add(DateTime date, T event) {
@@ -59,7 +61,7 @@ class EventList<T> {
 
   /// Returns `List<T>` events for the specified date.
   List<T> getEvents(DateTime date) {
-    return events != null
+    return events != null && events.entries.length > 0
         ? events.entries.firstWhere((entry) {
             return sameDate(entry.key, date);
           }).value
