@@ -40,11 +40,11 @@ class PaymentsState extends Model {
   /// Returns a `List<Payment>` for the given [billid].
   List<Payment> getPaymentsByBill(int billId) {
     var list = _payments.where((payment) => payment.billId == billId).toList();
-    return list;
+    return list != null ? list : [];
   }
 
   /// Adds one `Payment` to the database and updates the collection.
-  void addPayment(Payment payment) async {
+  Future<void> addPayment(Payment payment) async {
     var store = intMapStoreFactory.store('payments');
     
     int paymentKey;

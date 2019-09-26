@@ -4,6 +4,7 @@ import 'package:billsmanager/models/Payment.dart';
 import 'package:billsmanager/pages/shared/BillDetailsPage.dart';
 import 'package:billsmanager/store/BillsState.dart';
 import 'package:billsmanager/store/PaymentsState.dart';
+import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -94,7 +95,7 @@ class BillItem extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     Text(
-                      "\$${bill.amountDue}",
+                      NumberFormat.simpleCurrency().format(double.parse(bill.amountDue)),
                       style: TextStyle(
                         fontSize: 18.0,
                       ),
@@ -114,7 +115,7 @@ class BillItem extends StatelessWidget {
                           builder: (context) {
                             return AlertDialog(
                               title:
-                                  Text("Pay full amount? \$${bill.amountDue}"),
+                                  Text("Pay full amount? ${NumberFormat.simpleCurrency().format(double.parse(bill.amountDue))}"),
                               actions: <Widget>[
                                 Row(
                                   children: <Widget>[
@@ -126,7 +127,7 @@ class BillItem extends StatelessWidget {
                                       child: Text("PAY"),
                                       onPressed: () {
                                         ScopedModel.of<BillsState>(context)
-                                            .payFullAmount(bill)
+                                            .setBillPaid(bill.id)
                                             .then((res) {
                                           ScopedModel.of<PaymentsState>(context)
                                               .addPayment(Payment.withValues(

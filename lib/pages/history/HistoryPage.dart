@@ -1,6 +1,7 @@
 import 'package:billsmanager/store/PaymentsState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:intl/intl.dart';
 
 class HistoryPage extends StatelessWidget {
   @override
@@ -18,7 +19,8 @@ class HistoryPage extends StatelessWidget {
                     children: <Widget>[
                       ListTile(
                         leading: Icon(Icons.payment),
-                        title: Text("\$${payment.amountPaid}"),
+                        title: Text(NumberFormat.simpleCurrency()
+                            .format(double.parse(payment.amountPaid))),
                         subtitle: Text(
                             "${payment.paidOn.month}/${payment.paidOn.day}/${payment.paidOn.year}"),
                       ),

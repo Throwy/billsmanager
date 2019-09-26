@@ -1,5 +1,7 @@
 library utilities;
 
+import 'package:billsmanager/models/Payment.dart';
+
 bool sameDate(DateTime first, DateTime second) {
   return (first.year == second.year) &&
       (first.month == second.month) &&
@@ -14,4 +16,10 @@ bool overDue(DateTime dueOn) {
 String billItemDueInSubtitle(DateTime dueOn) {
   Duration daysLeft = dueOn.difference(DateTime.now());
   return "${dueOn.month}/${dueOn.day}/${dueOn.year}  >  In ${daysLeft.inDays} days";
+}
+
+double sumPayments(List<Payment> payments) {
+  double sum = 0.0;
+  payments.forEach((p) => sum += double.parse(p.amountPaid));
+  return sum;
 }

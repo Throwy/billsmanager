@@ -4,6 +4,7 @@ import 'package:billsmanager/store/BillsState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
 class CalendarPage extends StatefulWidget {
   CalendarPageState createState() => CalendarPageState();
@@ -145,9 +146,8 @@ class CalendarPageState extends State<CalendarPage>
                   child: Container(
                     child: ListTile(
                       title: Text(b.title),
-                      trailing: Text("\$${b.amountDue}"),
+                      trailing: Text(NumberFormat.simpleCurrency().format(double.parse(b.amountDue))),
                       subtitle: Text(b.billType),
-                      //onTap: () => print('${b.title} tapped'),
                     ),
                   ),
                 ),

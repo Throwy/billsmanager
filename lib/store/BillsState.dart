@@ -113,14 +113,14 @@ class BillsState extends Model {
   }
 
   /// Sets the value of paid to `true` for the specified `Bill` in the database.
-  Future<void> payFullAmount(Bill bill) async {
+  Future<void> setBillPaid(int billId) async {
     var store = intMapStoreFactory.store('bills');
-    var record = store.record(bill.id);
+    var record = store.record(billId);
 
     await database.transaction((trans) async {
       await record.update(trans, {'paid': 1});
     }).then((res) {
-      _bills.firstWhere((b) => b.id == bill.id).paid = true;
+      _bills.firstWhere((b) => b.id == billId).paid = true;
       notifyListeners();
     });
   }
