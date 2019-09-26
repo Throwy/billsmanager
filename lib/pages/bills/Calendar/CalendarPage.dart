@@ -27,7 +27,7 @@ class CalendarPageState extends State<CalendarPage>
       _events.add(bill.dueOn, bill);
     });
 
-    _selectedEvents = _events.events[_selectedDate] ?? [];
+    _selectedEvents = _events.getEvents(_selectedDate);
 
     _calendarController = new CalendarController();
     _animationController = new AnimationController(
@@ -82,6 +82,7 @@ class CalendarPageState extends State<CalendarPage>
   Widget _buildTableCalendar() {
     return TableCalendar(
       calendarController: _calendarController,
+      initialSelectedDay: DateTime.now(),
       events: _events.events,
       startingDayOfWeek: StartingDayOfWeek.sunday,
       availableGestures: AvailableGestures.horizontalSwipe,
@@ -98,8 +99,6 @@ class CalendarPageState extends State<CalendarPage>
             .copyWith(color: Theme.of(context).textTheme.body1.color),
         weekendStyle:
             TextStyle().copyWith(color: Theme.of(context).accentColor),
-        markersColor: Theme.of(context).primaryColorLight,
-        markersPositionBottom: 10.0,
         outsideWeekendStyle: TextStyle().copyWith(color: Colors.grey),
       ),
       headerStyle: HeaderStyle(
@@ -121,6 +120,43 @@ class CalendarPageState extends State<CalendarPage>
         ),
       ),
       onDaySelected: _onDaySelected,
+      builders: CalendarBuilders(
+        markersBuilder: (context, date, events, holidays) {
+          final children = <Widget>[];
+
+          if (events.isNotEmpty) {
+            children.add(
+              Positioned(
+                bottom: 1,
+                child: _buildEventsMarker(date, events),
+              ),
+            );
+          }
+
+          return children;
+        }
+      ),
+    );
+  }
+
+  Widget _buildEventsMarker(DateTime date, List events) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        color: Theme.of(context).primaryColorLight
+      ),
+      width: 14.0,
+      height: 14.0,
+      child: Center(
+        child: Text(
+          '${events.length}',
+          style: TextStyle().copyWith(
+            color: Colors.white,
+            fontSize: 11.0,
+          ),
+        ),
+      ),
     );
   }
 
@@ -146,7 +182,8 @@ class CalendarPageState extends State<CalendarPage>
                   child: Container(
                     child: ListTile(
                       title: Text(b.title),
-                      trailing: Text(NumberFormat.simpleCurrency().format(double.parse(b.amountDue))),
+                      trailing: Text(NumberFormat.simpleCurrency()
+                          .format(double.parse(b.amountDue))),
                       subtitle: Text(b.billType),
                     ),
                   ),

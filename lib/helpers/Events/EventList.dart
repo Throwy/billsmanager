@@ -1,3 +1,5 @@
+import 'package:billsmanager/helpers/utilities.dart';
+
 /// `EventList` is a helper class used to create a data structure that maps
 /// lists of 'T' events to `DateTime`s.
 ///
@@ -57,6 +59,10 @@ class EventList<T> {
 
   /// Returns `List<T>` events for the specified date.
   List<T> getEvents(DateTime date) {
-    return events != null && events.containsKey(date) ? events[date] : [];
+    return events != null
+        ? events.entries.firstWhere((entry) {
+            return sameDate(entry.key, date);
+          }).value
+        : [];
   }
 }
