@@ -2,8 +2,7 @@ import 'package:billsmanager/helpers/utilities.dart' as utilities;
 import 'package:billsmanager/models/Bill.dart';
 import 'package:billsmanager/models/Payment.dart';
 import 'package:billsmanager/pages/shared/BillDetailsPage.dart';
-import 'package:billsmanager/store/BillsState.dart';
-import 'package:billsmanager/store/PaymentsState.dart';
+import 'package:billsmanager/store/AppState.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
@@ -95,7 +94,8 @@ class BillItem extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     Text(
-                      NumberFormat.simpleCurrency().format(double.parse(bill.amountDue)),
+                      NumberFormat.simpleCurrency()
+                          .format(double.parse(bill.amountDue)),
                       style: TextStyle(
                         fontSize: 18.0,
                       ),
@@ -114,8 +114,8 @@ class BillItem extends StatelessWidget {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title:
-                                  Text("Pay full amount? ${NumberFormat.simpleCurrency().format(double.parse(bill.amountDue))}"),
+                              title: Text(
+                                  "Pay full amount? ${NumberFormat.simpleCurrency().format(double.parse(bill.amountDue))}"),
                               actions: <Widget>[
                                 Row(
                                   children: <Widget>[
@@ -126,10 +126,12 @@ class BillItem extends StatelessWidget {
                                     FlatButton(
                                       child: Text("PAY"),
                                       onPressed: () {
-                                        ScopedModel.of<BillsState>(context)
+                                        ScopedModel.of<AppState>(context)
+                                            .billsState
                                             .setBillPaid(bill.id)
                                             .then((res) {
-                                          ScopedModel.of<PaymentsState>(context)
+                                          ScopedModel.of<AppState>(context)
+                                              .paymentsState
                                               .addPayment(Payment.withValues(
                                                   null,
                                                   bill.id,
