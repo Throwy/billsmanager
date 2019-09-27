@@ -1,5 +1,3 @@
-import 'package:billsmanager/helpers/utilities.dart';
-
 /// `EventList` is a helper class used to create a data structure that maps
 /// lists of 'T' events to `DateTime`s.
 ///

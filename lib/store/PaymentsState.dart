@@ -13,10 +13,6 @@ mixin PaymentsState on Model {
   Database _database;
   List<Payment> _payments;
 
-  // PaymentsState({Key key, @required this.database}) {
-  //   _payments = new List<Payment>();
-  // }
-
   /// Intializes the `PaymentsState` class.
   ///
   /// This should only be called once, ie. when the app is being opened.

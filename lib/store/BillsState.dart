@@ -13,11 +13,7 @@ import 'package:sembast/sembast.dart';
 mixin BillsState on Model {
   Database _database;
   List<Bill> _bills;
-
-  // BillsState({Key key, @required this.database}) {
-  //   _bills = new List<Bill>();
-  // }
-
+  
   /// Initializes the `BillsState` class.
   ///
   /// This should only be called once, ie. when the app is being opened.

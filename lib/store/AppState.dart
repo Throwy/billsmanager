@@ -9,14 +9,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AppState extends Model with ThemeState, BillsState, PaymentsState {
   final SharedPreferences preferences;
   final Database database;
-  
+
   ThemeState themeState;
   BillsState billsState;
   PaymentsState paymentsState;
 
   AppState({Key key, @required this.preferences, @required this.database});
 
-  initAppState() async {
+  Future<AppState> initAppState() async {
     themeState = await this.initThemeState(preferences);
     billsState = await this.initBillsState(database);
     paymentsState = await this.initPaymentsState(database);

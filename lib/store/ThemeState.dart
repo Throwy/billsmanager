@@ -9,8 +9,6 @@ mixin ThemeState on Model {
   SharedPreferences _preferences;
   Brightness _brightness;
 
-  //ThemeState({Key key, @required this.preferences});
-
   /// Initializes the `ThemeState` class.
   ///
   /// This should only be called once, ie. when the app is being opened.
