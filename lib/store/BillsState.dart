@@ -93,7 +93,7 @@ class BillsState extends Model {
   }
 
   /// Adds one `Bill` to the database and updates the collection.
-  void addBill(Bill bill) async {
+  Future<void> addBill(Bill bill) async {
     var store = intMapStoreFactory.store("bills");
 
     int billKey;
@@ -126,12 +126,16 @@ class BillsState extends Model {
   }
 
   /// Deletes a single `Bill` from the database and updates the collection.
-  void deleteBill(int id) async {
-    // await database
-    //     .delete("bills", where: 'id = ?', whereArgs: [id]).then((value) {
-    //   _bills.removeWhere((bill) => bill.id == id);
-    //   notifyListeners();
-    // });
+  Future<void> deleteBill(int billId) async {
+    var store = intMapStoreFactory.store('bills');
+    var record = store.record(billId);
+
+    await database.transaction((trans) async {
+      await record.delete(trans);
+    }).then((res) {
+      _bills.removeWhere((bill) => bill.id == billId);
+      notifyListeners();
+    });
   }
 
   /// Deletes multiple `Bill`s from the database and updates the collection.
