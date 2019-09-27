@@ -35,10 +35,12 @@ class App extends StatelessWidget {
           return MaterialApp(
             title: 'Bills Manager',
             theme: ThemeData(
-              primarySwatch: Colors.teal,
-              accentColor: model.themeState.brightness == Brightness.dark
-                  ? Colors.tealAccent
-                  : Colors.deepPurple,
+              //primarySwatch: Colors.teal,
+              primaryColor: model.themeState.primaryColor,
+              accentColor: model.themeState.accentColor,
+              // accentColor: model.themeState.brightness == Brightness.dark
+              //     ? Colors.tealAccent
+              //     : Colors.deepPurple,
               brightness: model.themeState.brightness,
             ),
             home: LandingPage(

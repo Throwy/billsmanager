@@ -15,3 +15,4 @@ Mobile app to manage bills and set reminders for upcoming payments due.
 - [table_calendar](https://github.com/aleksanderwozniak/table_calendar)
 - [flutter_slidable](https://github.com/letsar/flutter_slidable)
 - [flutter_alert](https://github.com/jerolimov/flutter_alert)
+- [flutter_material_color_picker](https://github.com/Pyozer/flutter_material_color_picker)
