@@ -217,7 +217,36 @@ class BillDetailsPageState extends State<BillDetailsPage> {
                         color: Colors.red,
                         icon: Icons.delete,
                         onTap: () {
-                          ScopedModel.of<PaymentsState>(context).deletePayment(p.id);
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text(
+                                    "Delete payment of ${NumberFormat.simpleCurrency().format(double.parse(p.amountPaid))}?"),
+                                actions: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      FlatButton(
+                                        child: Text("CANCEL"),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                      FlatButton(
+                                        child: Text(
+                                          "DELETE",
+                                          style: TextStyle()
+                                              .copyWith(color: Colors.red),
+                                        ),
+                                        onPressed: () {
+                                          ScopedModel.of<PaymentsState>(context)
+                                              .deletePayment(p.id);
+                                        },
+                                      )
+                                    ],
+                                  )
+                                ],
+                              );
+                            },
+                          );
                         },
                       )
                     ],
