@@ -1,5 +1,5 @@
 import 'package:billsmanager/models/Bill.dart';
-import 'package:billsmanager/store/BillsState.dart';
+import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -35,7 +35,7 @@ class BillFormPageState extends State<BillFormPage> {
             icon: Icon(Icons.check),
             onPressed: () {
               if(_formKey.currentState.validate()) {
-                ScopedModel.of<BillsState>(context).addBill(_newBill);
+                ScopedModel.of<AppState>(context).billsState.addBill(_newBill);
                 Navigator.pop(context);
               }
             },

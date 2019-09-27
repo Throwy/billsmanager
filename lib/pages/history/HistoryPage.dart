@@ -1,4 +1,4 @@
-import 'package:billsmanager/store/PaymentsState.dart';
+import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:intl/intl.dart';
@@ -10,10 +10,10 @@ class HistoryPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("History"),
       ),
-      body: ScopedModelDescendant<PaymentsState>(
+      body: ScopedModelDescendant<AppState>(
         builder: (context, child, model) {
           return ListView(
-            children: model.payments
+            children: model.paymentsState.payments
                 .map(
                   (payment) => Column(
                     children: <Widget>[

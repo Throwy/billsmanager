@@ -1,16 +1,16 @@
 import 'package:billsmanager/helpers/utilities.dart' as utilities;
 import 'package:billsmanager/pages/shared/BillDetailsPage.dart';
-import 'package:billsmanager/store/BillsState.dart';
+import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class UnpaidBillsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<BillsState>(
+    return ScopedModelDescendant<AppState>(
       builder: (context, child, model) {
         return ListView(
-          children: model.getUnpaidBills().map((bill) {
+          children: model.billsState.getUnpaidBills().map((bill) {
             bool overDue = utilities.overDue(bill.dueOn);
             bool sameDate = utilities.sameDate(bill.dueOn, DateTime.now());
 

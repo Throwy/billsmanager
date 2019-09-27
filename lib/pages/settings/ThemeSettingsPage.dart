@@ -1,4 +1,4 @@
-import 'package:billsmanager/store/ThemeState.dart';
+import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -9,33 +9,29 @@ class ThemeSettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Theme"),
       ),
-      body: ListView(
-        children: <Widget>[
-          ScopedModelDescendant<ThemeState>(
-            builder: (context, child, model) {
-              return RadioListTile(
+      body: ScopedModelDescendant<AppState>(
+        builder: (context, child, model) {
+          return ListView(
+            children: <Widget>[
+              RadioListTile(
                 title: Text("Dark"),
                 value: Brightness.dark,
                 groupValue: model.brightness,
                 onChanged: (value) {
-                  model.changeBrightness(value);
+                  model.themeState.changeBrightness(value);
                 },
-              );
-            },
-          ),
-          ScopedModelDescendant<ThemeState>(
-            builder: (context, child, model) {
-              return RadioListTile(
+              ),
+              RadioListTile(
                 title: Text("Light"),
                 value: Brightness.light,
                 groupValue: model.brightness,
                 onChanged: (value) {
-                  model.changeBrightness(value);
+                  model.themeState.changeBrightness(value);
                 },
-              );
-            },
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }

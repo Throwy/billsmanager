@@ -1,6 +1,6 @@
 import 'package:billsmanager/helpers/Events/EventList.dart';
 import 'package:billsmanager/pages/shared/BillDetailsPage.dart';
-import 'package:billsmanager/store/BillsState.dart';
+import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -23,7 +23,7 @@ class CalendarPageState extends State<CalendarPage>
     super.initState();
     _events = new EventList();
     _selectedDate = DateTime.now();
-    ScopedModel.of<BillsState>(context).bills.forEach((bill) {
+    ScopedModel.of<AppState>(context).billsState.bills.forEach((bill) {
       _events.add(bill.dueOn, bill);
     });
 
@@ -120,21 +120,20 @@ class CalendarPageState extends State<CalendarPage>
         ),
       ),
       onDaySelected: _onDaySelected,
-      builders: CalendarBuilders(
-        markersBuilder: (context, date, events, holidays) {
-          final children = <Widget>[];
+      builders:
+          CalendarBuilders(markersBuilder: (context, date, events, holidays) {
+        final children = <Widget>[];
 
-          if (events.isNotEmpty) {
-            children.add(
-              Positioned(
-                bottom: 1,
-                child: _buildEventsMarker(date, events),
-              ),
-            );
-          }
-          return children;
+        if (events.isNotEmpty) {
+          children.add(
+            Positioned(
+              bottom: 1,
+              child: _buildEventsMarker(date, events),
+            ),
+          );
         }
-      ),
+        return children;
+      }),
     );
   }
 
@@ -142,9 +141,8 @@ class CalendarPageState extends State<CalendarPage>
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        color: Theme.of(context).primaryColorLight
-      ),
+          shape: BoxShape.rectangle,
+          color: Theme.of(context).primaryColorLight),
       width: 14.0,
       height: 14.0,
       child: Center(

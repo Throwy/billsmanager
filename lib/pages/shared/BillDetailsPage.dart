@@ -1,8 +1,7 @@
 import 'package:billsmanager/helpers/utilities.dart' as utilities;
 import 'package:billsmanager/models/Bill.dart';
 import 'package:billsmanager/models/Payment.dart';
-import 'package:billsmanager/store/BillsState.dart';
-import 'package:billsmanager/store/PaymentsState.dart';
+import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -31,55 +30,51 @@ class BillDetailsPageState extends State<BillDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<BillsState>(
-      builder: (context, child, billsModel) {
-        return ScopedModelDescendant<PaymentsState>(
-          builder: (context, child, paymentsModel) {
-            List<Payment> payments =
-                paymentsModel.getPaymentsByBill(widget.bill.id);
-            _paymentsSum = utilities.sumPayments(payments);
+    return ScopedModelDescendant<AppState>(
+      builder: (context, child, model) {
+        List<Payment> payments =
+            model.paymentsState.getPaymentsByBill(widget.bill.id);
+        _paymentsSum = utilities.sumPayments(payments);
 
-            return Scaffold(
-              appBar: AppBar(
-                title: Text("Details"),
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {},
-                  ),
-                ],
+        return Scaffold(
+          appBar: AppBar(
+            title: Text("Details"),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () {},
               ),
-              body: Container(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    _buildHeader(),
-                    Divider(),
-                    !widget.bill.paid
-                        ? _buildDueRow(_paymentsSum)
-                        : _buildPaidRow(),
-                    Divider(),
-                    Expanded(
-                      flex: 1,
-                      child: _buildNotesSection(),
-                    ),
-                    Divider(),
-                    _buildMakePaymentRow(),
-                    Expanded(
-                      flex: 3,
-                      child: _buildPaymentsColumn(payments),
-                    ),
-                  ],
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {},
+              ),
+            ],
+          ),
+          body: Container(
+            padding: EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                _buildHeader(),
+                Divider(),
+                !widget.bill.paid
+                    ? _buildDueRow(_paymentsSum)
+                    : _buildPaidRow(),
+                Divider(),
+                Expanded(
+                  flex: 1,
+                  child: _buildNotesSection(),
                 ),
-              ),
-            );
-          },
+                Divider(),
+                _buildMakePaymentRow(),
+                Expanded(
+                  flex: 3,
+                  child: _buildPaymentsColumn(payments),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
@@ -237,7 +232,8 @@ class BillDetailsPageState extends State<BillDetailsPage> {
                                               .copyWith(color: Colors.red),
                                         ),
                                         onPressed: () {
-                                          ScopedModel.of<PaymentsState>(context)
+                                          ScopedModel.of<AppState>(context)
+                                              .paymentsState
                                               .deletePayment(p.id);
                                         },
                                       )
@@ -294,17 +290,20 @@ class BillDetailsPageState extends State<BillDetailsPage> {
         FlatButton(
           child: Text("ACCEPT"),
           onPressed: () {
-            ScopedModel.of<PaymentsState>(context)
+            ScopedModel.of<AppState>(context)
+                .paymentsState
                 .addPayment(Payment.withValues(
-              null,
-              widget.bill.id,
-              _paymentAmount,
-              DateTime.now(),
-            ))
+                  null,
+                  widget.bill.id,
+                  _paymentAmount,
+                  DateTime.now(),
+                ))
                 .then((res) {
               var total = _paymentsSum + double.parse(_paymentAmount);
               if (total >= double.parse(widget.bill.amountDue)) {
-                ScopedModel.of<BillsState>(context).setBillPaid(widget.bill.id);
+                ScopedModel.of<AppState>(context)
+                    .billsState
+                    .setBillPaid(widget.bill.id);
               }
             });
             Navigator.of(context).pop();

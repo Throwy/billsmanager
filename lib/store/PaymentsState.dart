@@ -9,20 +9,22 @@ import 'package:sembast/sembast.dart';
 ///
 /// There are multiple methods for retrieving payments based on different
 /// parameters.
-class PaymentsState extends Model {
-  final Database database;
+mixin PaymentsState on Model {
+  Database _database;
   List<Payment> _payments;
 
-  PaymentsState({Key key, @required this.database}) {
-    _payments = new List<Payment>();
-  }
+  // PaymentsState({Key key, @required this.database}) {
+  //   _payments = new List<Payment>();
+  // }
 
   /// Intializes the `PaymentsState` class.
   ///
   /// This should only be called once, ie. when the app is being opened.
-  initPaymentsState() async {
+  Future<PaymentsState> initPaymentsState(Database database) async {
+    _database = database;
+
     var store = intMapStoreFactory.store('payments');
-    var res = await store.find(database, finder: Finder());
+    var res = await store.find(_database, finder: Finder());
     _payments = res.isNotEmpty
         ? res.map((payment) => Payment.fromMap(payment)).toList()
         : [];
@@ -48,7 +50,7 @@ class PaymentsState extends Model {
     var store = intMapStoreFactory.store('payments');
     
     int paymentKey;
-    await database.transaction((trans) async {
+    await _database.transaction((trans) async {
       paymentKey = await store.add(trans, payment.toMap());
     }).then((res) {
       payment.id = paymentKey;
@@ -62,7 +64,7 @@ class PaymentsState extends Model {
     var store = intMapStoreFactory.store('payments');
     var record = store.record(paymentId);
 
-    await database.transaction((trans) async {
+    await _database.transaction((trans) async {
       await record.delete(trans);
     }).then((res) {
       _payments.removeWhere((payment) => payment.id == paymentId);

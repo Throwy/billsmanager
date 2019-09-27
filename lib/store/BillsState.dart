@@ -10,20 +10,22 @@ import 'package:sembast/sembast.dart';
 ///
 /// There are multiple methods for retrieving bills based on different
 /// parameters.
-class BillsState extends Model {
-  final Database database;
+mixin BillsState on Model {
+  Database _database;
   List<Bill> _bills;
 
-  BillsState({Key key, @required this.database}) {
-    _bills = new List<Bill>();
-  }
+  // BillsState({Key key, @required this.database}) {
+  //   _bills = new List<Bill>();
+  // }
 
   /// Initializes the `BillsState` class.
   ///
   /// This should only be called once, ie. when the app is being opened.
-  initBillsState() async {
+  Future<BillsState> initBillsState(Database database) async {
+    _database = database;
+
     var store = intMapStoreFactory.store('bills');
-    var res = await store.find(database, finder: Finder());
+    var res = await store.find(_database, finder: Finder());
 
     _bills = res.isNotEmpty
         ? res.map((bill) => Bill.fromMap(bill)).toList()
@@ -97,7 +99,7 @@ class BillsState extends Model {
     var store = intMapStoreFactory.store("bills");
 
     int billKey;
-    await database.transaction((trans) async {
+    await _database.transaction((trans) async {
       billKey = await store.add(trans, bill.toMap());
     }).then((res) {
       bill.id = billKey;
@@ -117,7 +119,7 @@ class BillsState extends Model {
     var store = intMapStoreFactory.store('bills');
     var record = store.record(billId);
 
-    await database.transaction((trans) async {
+    await _database.transaction((trans) async {
       await record.update(trans, {'paid': 1});
     }).then((res) {
       _bills.firstWhere((b) => b.id == billId).paid = true;
@@ -130,7 +132,7 @@ class BillsState extends Model {
     var store = intMapStoreFactory.store('bills');
     var record = store.record(billId);
 
-    await database.transaction((trans) async {
+    await _database.transaction((trans) async {
       await record.delete(trans);
     }).then((res) {
       _bills.removeWhere((bill) => bill.id == billId);

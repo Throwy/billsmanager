@@ -5,19 +5,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Models the app state regarding the theme.
 ///
 /// This class holds the state of theme brightness.
-class ThemeState extends Model {
-  final SharedPreferences preferences;
+mixin ThemeState on Model {
+  SharedPreferences _preferences;
   Brightness _brightness;
 
-  ThemeState({Key key, @required this.preferences});
+  //ThemeState({Key key, @required this.preferences});
 
   /// Initializes the `ThemeState` class.
   ///
   /// This should only be called once, ie. when the app is being opened.
-  initThemeState() async {
+  Future<ThemeState> initThemeState(SharedPreferences preferences) async {
+    _preferences = preferences;
     try {
-      if (preferences.containsKey("brightness")) {
-        var brightnessIndex = preferences.getInt("brightness");
+      if (_preferences.containsKey("brightness")) {
+        var brightnessIndex = _preferences.getInt("brightness");
         _brightness = Brightness.values[brightnessIndex];
       } else {
         _brightness = Brightness.dark;
@@ -35,7 +36,7 @@ class ThemeState extends Model {
   /// This value is saved in the SharedPreferences location.
   void changeBrightness(Brightness brightness) {
     _brightness = brightness;
-    preferences.setInt("brightness", _brightness.index);
+    _preferences.setInt("brightness", _brightness.index);
     notifyListeners();
   }
 

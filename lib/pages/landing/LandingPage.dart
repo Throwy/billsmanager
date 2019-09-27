@@ -8,7 +8,7 @@ import 'package:billsmanager/pages/history/HistoryPage.dart';
 import 'package:billsmanager/pages/landing/tabs/OverdueBillsPage.dart';
 import 'package:billsmanager/pages/landing/tabs/UpcomingBillsPage.dart';
 import 'package:billsmanager/pages/settings/SettingsPage.dart';
-import 'package:billsmanager/store/BillsState.dart';
+import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -75,10 +75,10 @@ class LandingPageState extends State<LandingPage> {
           ],
         ),
       ),
-      body: ScopedModelDescendant<BillsState>(
+      body: ScopedModelDescendant<AppState>(
         builder: (context, child, model) {
-          var upcomingBills = model.getUpcomingBills();
-          var overdueBills = model.getOverdueBills();
+          var upcomingBills = model.billsState.getUpcomingBills();
+          var overdueBills = model.billsState.getOverdueBills();
 
           return DefaultTabController(
             length: 2,

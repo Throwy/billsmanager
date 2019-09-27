@@ -1,8 +1,6 @@
 import 'package:billsmanager/helpers/DBProvider.dart';
 import 'package:billsmanager/pages/landing/LandingPage.dart';
-import 'package:billsmanager/store/BillsState.dart';
-import 'package:billsmanager/store/PaymentsState.dart';
-import 'package:billsmanager/store/ThemeState.dart';
+import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -12,23 +10,17 @@ void main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   var db = await DBProvider.db.database;
   runApp(App(
-    themeState: await ThemeState(preferences: preferences).initThemeState(),
-    billsState: await BillsState(database: db).initBillsState(),
-    paymentsState: await PaymentsState(database: db).initPaymentsState(),
+    appState: await AppState(preferences: preferences, database: db).initAppState(),
   ));
 }
 
 class App extends StatelessWidget {
-  final ThemeState themeState;
-  final BillsState billsState;
-  final PaymentsState paymentsState;
+  final AppState appState;
 
-  const App(
-      {Key key,
-      @required this.themeState,
-      @required this.billsState,
-      @required this.paymentsState})
-      : super(key: key);
+  const App({
+    Key key,
+    @required this.appState,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,30 +28,24 @@ class App extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return ScopedModel<ThemeState>(
-      model: themeState,
-      child: ScopedModel<BillsState>(
-        model: billsState,
-        child: ScopedModel<PaymentsState>(
-          model: paymentsState,
-          child: ScopedModelDescendant<ThemeState>(
-            builder: (context, child, model) {
-              return MaterialApp(
-                title: 'Bills Manager',
-                theme: ThemeData(
-                  primarySwatch: Colors.teal,
-                  accentColor: model.brightness == Brightness.dark
-                      ? Colors.tealAccent
-                      : Colors.deepOrange,
-                  brightness: model.brightness,
-                ),
-                home: LandingPage(
-                  title: 'Bills Manager',
-                ),
-              );
-            },
-          ),
-        ),
+    return ScopedModel<AppState>(
+      model: appState,
+      child: ScopedModelDescendant<AppState>(
+        builder: (context, child, model) {
+          return MaterialApp(
+            title: 'Bills Manager',
+            theme: ThemeData(
+              primarySwatch: Colors.teal,
+              accentColor: model.themeState.brightness == Brightness.dark
+                  ? Colors.tealAccent
+                  : Colors.deepOrange,
+              brightness: model.themeState.brightness,
+            ),
+            home: LandingPage(
+              title: 'Bills Manager',
+            ),
+          );
+        },
       ),
     );
   }

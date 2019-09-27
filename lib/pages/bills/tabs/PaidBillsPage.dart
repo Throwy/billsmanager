@@ -1,15 +1,15 @@
 import 'package:billsmanager/pages/shared/BillDetailsPage.dart';
-import 'package:billsmanager/store/BillsState.dart';
+import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class PaidBillsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<BillsState>(
+    return ScopedModelDescendant<AppState>(
       builder: (context, child, model) {
         return ListView(
-          children: model
+          children: model.billsState
               .getPaidBills()
               .map(
                 (bill) => Column(
