@@ -12,15 +12,10 @@ import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class LandingPage extends StatefulWidget {
+class LandingPage extends StatelessWidget {
   LandingPage({Key key, this.title}) : super(key: key);
   final String title;
 
-  @override
-  LandingPageState createState() => LandingPageState();
-}
-
-class LandingPageState extends State<LandingPage> {
   final List<DrawerItem> _drawerItems = [
     new DrawerItem("Bills", Icons.attach_money, BillsPage()),
     new DrawerItem("History", Icons.history, HistoryPage()),
@@ -28,34 +23,11 @@ class LandingPageState extends State<LandingPage> {
     new DrawerItem("About", Icons.info, AboutPage()),
   ];
 
-  List<ListTile> _drawerTiles;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _drawerTiles = _drawerItems.map<ListTile>((DrawerItem item) {
-      return ListTile(
-        leading: Icon(item.icon),
-        title: Text(item.title),
-        onTap: () {
-          Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => item.widget,
-            ),
-          );
-        },
-      );
-    }).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       drawer: Drawer(
         child: Column(
@@ -67,9 +39,23 @@ class LandingPageState extends State<LandingPage> {
               ),
             ),
             Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: _drawerTiles,
+              child: ListView.builder(
+                itemCount: _drawerItems.length,
+                itemBuilder: (context, i) {
+                  return ListTile(
+                    leading: Icon(_drawerItems[i].icon),
+                    title: Text(_drawerItems[i].title),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => _drawerItems[i].widget,
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             )
           ],

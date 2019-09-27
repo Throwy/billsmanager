@@ -19,6 +19,7 @@ class AboutPage extends StatelessWidget {
                   children: <Widget>[
                     Icon(
                       Icons.payment,
+                      color: Theme.of(context).accentColor,
                       size: 100.0,
                     ),
                     Text(

@@ -15,22 +15,21 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Settings"),
       ),
-      body: ListView.builder(
+      body: ListView.separated(
         itemCount: _settingsItems.length,
+        separatorBuilder: (context, i) {
+          return Divider();
+        },
         itemBuilder: (context, i) {
-          if (i.isOdd) return Divider();
-
-          final index = i ~/ 2;
           return ListTile(
             title: Text(
-              _settingsItems[index].title,
+              _settingsItems[i].title,
               style: _style,
             ),
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      _settingsItems[index].widget),
+                  builder: (BuildContext context) => _settingsItems[i].widget),
             ),
           );
         },
