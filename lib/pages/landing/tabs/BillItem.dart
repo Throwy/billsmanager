@@ -3,6 +3,8 @@ import 'package:billsmanager/models/Bill.dart';
 import 'package:billsmanager/models/Payment.dart';
 import 'package:billsmanager/pages/shared/BillDetailsPage.dart';
 import 'package:billsmanager/store/AppState.dart';
+import 'package:flutter_alert/flutter_alert.dart';
+import 'package:flutter_alert/flutter_alert_material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
@@ -110,42 +112,36 @@ class BillItem extends StatelessWidget {
                       ),
                       color: Theme.of(context).accentColor,
                       onPressed: () {
-                        showDialog(
+                        showMaterialAlert(
                           context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text(
-                                  "Pay full amount? ${NumberFormat.simpleCurrency().format(double.parse(bill.amountDue))}"),
-                              actions: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    FlatButton(
-                                      child: Text("CANCEL"),
-                                      onPressed: () => Navigator.pop(context),
-                                    ),
-                                    FlatButton(
-                                      child: Text("PAY"),
-                                      onPressed: () {
-                                        ScopedModel.of<AppState>(context)
-                                            .billsState
-                                            .setBillPaid(bill.id)
-                                            .then((res) {
-                                          ScopedModel.of<AppState>(context)
-                                              .paymentsState
-                                              .addPayment(Payment.withValues(
-                                                  null,
-                                                  bill.id,
-                                                  bill.amountDue,
-                                                  DateTime.now()));
-                                          Navigator.pop(context);
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            );
-                          },
+                          barrierDismissible: true,
+                          title:
+                              "Pay full amount? ${NumberFormat.simpleCurrency().format(double.parse(bill.amountDue))}",
+                          actions: [
+                            AlertAction(
+                              text: "CANCEL",
+                              onPressed: () {},
+                              automaticallyPopNavigation: true,
+                            ),
+                            AlertAction(
+                              text: "PAY",
+                              onPressed: () {
+                                ScopedModel.of<AppState>(context)
+                                    .billsState
+                                    .setBillPaid(bill.id)
+                                    .then((res) {
+                                  ScopedModel.of<AppState>(context)
+                                      .paymentsState
+                                      .addPayment(Payment.withValues(
+                                          null,
+                                          bill.id,
+                                          bill.amountDue,
+                                          DateTime.now()));
+                                });
+                              },
+                              automaticallyPopNavigation: true,
+                            ),
+                          ],
                         );
                       },
                     ),

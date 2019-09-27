@@ -3,6 +3,8 @@ import 'package:billsmanager/models/Bill.dart';
 import 'package:billsmanager/models/Payment.dart';
 import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alert/flutter_alert.dart';
+import 'package:flutter_alert/flutter_alert_material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -46,7 +48,27 @@ class BillDetailsPageState extends State<BillDetailsPage> {
               ),
               IconButton(
                 icon: Icon(Icons.delete),
-                onPressed: () {},
+                onPressed: () {
+                  showMaterialAlert(
+                    context: context,
+                    barrierDismissible: true,
+                    title: "Delete bill?",
+                    body: "This will delete any payments associated with it.",
+                    actions: [
+                      AlertAction(
+                        text: "CANCEL",
+                        onPressed: () {},
+                        automaticallyPopNavigation: true,
+                      ),
+                      AlertAction(
+                        text: "DELETE",
+                        onPressed: () {},
+                        automaticallyPopNavigation: true,
+                        isDestructiveAction: true,
+                      ),
+                    ],
+                  );
+                },
               ),
             ],
           ),
@@ -212,37 +234,28 @@ class BillDetailsPageState extends State<BillDetailsPage> {
                         color: Colors.red,
                         icon: Icons.delete,
                         onTap: () {
-                          showDialog(
+                          showMaterialAlert(
                             context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text(
-                                    "Delete payment of ${NumberFormat.simpleCurrency().format(double.parse(p.amountPaid))}?"),
-                                actions: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      FlatButton(
-                                        child: Text("CANCEL"),
-                                        onPressed: () => Navigator.pop(context),
-                                      ),
-                                      FlatButton(
-                                        child: Text(
-                                          "DELETE",
-                                          style: TextStyle()
-                                              .copyWith(color: Colors.red),
-                                        ),
-                                        onPressed: () {
-                                          ScopedModel.of<AppState>(context)
-                                              .paymentsState
-                                              .deletePayment(p.id);
-                                          Navigator.pop(context);
-                                        },
-                                      )
-                                    ],
-                                  )
-                                ],
-                              );
-                            },
+                            barrierDismissible: true,
+                            title:
+                                "Delete payment of ${NumberFormat.simpleCurrency().format(double.parse(p.amountPaid))}?",
+                            actions: [
+                              AlertAction(
+                                text: "CANCEL",
+                                onPressed: () {},
+                                automaticallyPopNavigation: true,
+                              ),
+                              AlertAction(
+                                text: "DELETE",
+                                onPressed: () {
+                                  ScopedModel.of<AppState>(context)
+                                      .paymentsState
+                                      .deletePayment(p.id);
+                                },
+                                automaticallyPopNavigation: true,
+                                isDestructiveAction: true,
+                              ),
+                            ],
                           );
                         },
                       )

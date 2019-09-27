@@ -38,7 +38,7 @@ class App extends StatelessWidget {
               primarySwatch: Colors.teal,
               accentColor: model.themeState.brightness == Brightness.dark
                   ? Colors.tealAccent
-                  : Colors.deepOrange,
+                  : Colors.deepPurple,
               brightness: model.themeState.brightness,
             ),
             home: LandingPage(
