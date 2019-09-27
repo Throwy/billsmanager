@@ -1,5 +1,7 @@
 import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alert/flutter_alert.dart';
+import 'package:flutter_alert/flutter_alert_material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -30,7 +32,7 @@ class ThemeSettingsPage extends StatelessWidget {
                           ? true
                           : false,
                       onChanged: (val) {
-                        if(val) {
+                        if (val) {
                           model.themeState.changeBrightness(Brightness.dark);
                         } else {
                           model.themeState.changeBrightness(Brightness.light);
@@ -57,9 +59,9 @@ class ThemeSettingsPage extends StatelessWidget {
                               content: MaterialColorPicker(
                                 selectedColor: model.themeState.primaryColor,
                                 shrinkWrap: true,
-                                onlyShadeSelection: true,
-                                onColorChange: (color) {
-                                  model.themeState.changePrimaryColor(color);
+                                allowShades: false,
+                                onMainColorChange: (swatch) {
+                                  model.themeState.changePrimaryColor(swatch);
                                   Navigator.pop(context);
                                 },
                               ),
@@ -81,25 +83,58 @@ class ThemeSettingsPage extends StatelessWidget {
                       circleSize: 30.0,
                       onColorChoose: () {
                         showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text("Accent Color"),
-                              content: MaterialColorPicker(
-                                selectedColor: model.themeState.accentColor,
-                                shrinkWrap: true,
-                                onlyShadeSelection: true,
-                                onColorChange: (color) {
-                                  model.themeState.changeAccentColor(color);
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            );
-                          }
-                        );
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text("Accent Color"),
+                                content: MaterialColorPicker(
+                                  selectedColor: model.themeState.accentColor,
+                                  shrinkWrap: true,
+                                  onlyShadeSelection: true,
+                                  allowShades: true,
+                                  onColorChange: (color) {
+                                    model.themeState.changeAccentColor(color);
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              );
+                            });
                       },
                     ),
                   ),
+                  Divider(),
+                  InkWell(
+                    child: ListTile(
+                      title: Text(
+                        "Reset",
+                        style: _headerStyle,
+                      ),
+                      subtitle:
+                          Text("Reset app theme settings to their defaults."),
+                    ),
+                    onTap: () {
+                      showMaterialAlert(
+                        context: context,
+                        barrierDismissible: true,
+                        title: "Reset app to default theme?",
+                        actions: [
+                          AlertAction(
+                            text: "CANCEL",
+                            automaticallyPopNavigation: true,
+                            onPressed: () {},
+                          ),
+                          AlertAction(
+                            text: "RESET",
+                            automaticallyPopNavigation: true,
+                            onPressed: () {
+                              model.themeState.resetToDefault();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  Divider(),
                 ],
               ),
             ],

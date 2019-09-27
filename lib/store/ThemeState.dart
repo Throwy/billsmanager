@@ -9,6 +9,8 @@ mixin ThemeState on Model {
   SharedPreferences _preferences;
   Brightness _brightness;
   Color _primaryColor;
+  Color _primaryColorDark;
+  Color _primaryColorLight;
   Color _accentColor;
 
   /// Initializes the `ThemeState` class.
@@ -30,12 +32,20 @@ mixin ThemeState on Model {
     try {
       if (_preferences.containsKey("primaryColor")) {
         var primaryColorValue = _preferences.getInt("primaryColor");
+        var primaryColorDarkValue = _preferences.getInt("primaryColorDark");
+        var primaryColorLightValue = _preferences.getInt("primaryColorLight");
         _primaryColor = Color(primaryColorValue);
+        _primaryColorDark = Color(primaryColorDarkValue);
+        _primaryColorLight = Color(primaryColorLightValue);
       } else {
-        _primaryColor = Colors.teal;  
+        _primaryColor = Colors.deepPurple;
+        _primaryColorDark = Colors.deepPurple[700];
+        _primaryColorLight = Colors.deepPurple[200];
       }
     } catch (Exception) {
-      _primaryColor = Colors.teal;
+      _primaryColor = Colors.deepPurple;
+      _primaryColorDark = Colors.deepPurple[700];
+      _primaryColorLight = Colors.deepPurple[200];
     }
 
     try {
@@ -43,7 +53,7 @@ mixin ThemeState on Model {
         var accentColorValue = _preferences.getInt("accentColor");
         _accentColor = Color(accentColorValue);
       } else {
-        _accentColor = Colors.tealAccent;  
+        _accentColor = Colors.tealAccent;
       }
     } catch (Exception) {
       _accentColor = Colors.tealAccent;
@@ -57,6 +67,12 @@ mixin ThemeState on Model {
   /// Gets the app's primary `Color`.
   Color get primaryColor => _primaryColor;
 
+  /// Gets the app's primaryLight `Color`.
+  Color get primaryColorDark => _primaryColorDark;
+
+  /// Gets the app's primaryDarl `Color`.
+  Color get primaryColorLight => _primaryColorLight;
+
   /// Gets the app's accent `Color`.
   Color get accentColor => _accentColor;
 
@@ -68,15 +84,28 @@ mixin ThemeState on Model {
   }
 
   /// Changes the primary color of the app to the given `Color`.
-  void changePrimaryColor(Color color) {
-    _primaryColor = color;
-    _preferences.setInt("primaryColor", color.value);
+  void changePrimaryColor(ColorSwatch color) {
+    _primaryColor = color[500];
+    _primaryColorDark = color[700];
+    _primaryColorLight = color[200];
+    _preferences.setInt("primaryColor", _primaryColor.value);
+    _preferences.setInt("primaryColorDark", _primaryColorDark.value);
+    _preferences.setInt("primaryColorLight", _primaryColorLight.value);
     notifyListeners();
   }
 
   void changeAccentColor(Color color) {
     _accentColor = color;
     _preferences.setInt("accentColor", color.value);
+    notifyListeners();
+  }
+
+  void resetToDefault() {
+    _brightness = Brightness.dark;
+    _primaryColor = Colors.deepPurple;
+    _primaryColorDark = Colors.deepPurple[700];
+    _primaryColorLight = Colors.deepPurple[200];
+    _accentColor = Colors.tealAccent;
     notifyListeners();
   }
 
