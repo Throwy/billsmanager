@@ -235,6 +235,7 @@ class BillDetailsPageState extends State<BillDetailsPage> {
                                           ScopedModel.of<AppState>(context)
                                               .paymentsState
                                               .deletePayment(p.id);
+                                          Navigator.pop(context);
                                         },
                                       )
                                     ],
