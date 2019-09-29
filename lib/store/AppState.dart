@@ -18,7 +18,7 @@ class AppState extends Model with ThemeState, BillsState, PaymentsState {
 
   Future<AppState> initAppState() async {
     themeState = await this.initThemeState(preferences);
-    billsState = await this.initBillsState(database);
+    billsState = await this.initBillsState(preferences, database);
     paymentsState = await this.initPaymentsState(database);
 
     return this;

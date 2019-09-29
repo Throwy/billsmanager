@@ -3,6 +3,7 @@ import 'package:billsmanager/models/Bill.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:sembast/sembast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Models the app state regarding bills.
 ///
@@ -11,26 +12,42 @@ import 'package:sembast/sembast.dart';
 /// There are multiple methods for retrieving bills based on different
 /// parameters.
 mixin BillsState on Model {
+  SharedPreferences _preferences;
+  int _upcomingBillPeriod;
   Database _database;
   List<Bill> _bills;
-  
+
   /// Initializes the `BillsState` class.
   ///
   /// This should only be called once, ie. when the app is being opened.
-  Future<BillsState> initBillsState(Database database) async {
+  Future<BillsState> initBillsState(
+      SharedPreferences preferences, Database database) async {
+    _preferences = preferences;
     _database = database;
+
+    try {
+      if (preferences.containsKey("upcomingBillPeriod")) {
+        _upcomingBillPeriod = _preferences.getInt("upcomingBillPeriod");
+      } else {
+        _upcomingBillPeriod = 7;
+      }
+    } catch (e) {
+      _upcomingBillPeriod = 7;
+    }
 
     var store = intMapStoreFactory.store('bills');
     var res = await store.find(_database, finder: Finder());
 
-    _bills = res.isNotEmpty
-        ? res.map((bill) => Bill.fromMap(bill)).toList()
-        : [];
+    _bills =
+        res.isNotEmpty ? res.map((bill) => Bill.fromMap(bill)).toList() : [];
     return this;
   }
 
   /// Gets all of the `Bill`s.
   List<Bill> get bills => _bills;
+
+  /// Gets the number of days to look ahead for upcoming bills.
+  int get upcomingBillPeriod => _upcomingBillPeriod;
 
   /// Gets a `Bill` from the collection with the given [id].
   Bill getBill(int id) {
@@ -40,8 +57,9 @@ mixin BillsState on Model {
   /// Gets all upcoming `Bill`s, including ones due today.
   List<Bill> getUpcomingBills() {
     var miliNow = DateTime.now().millisecondsSinceEpoch;
-    var miliExtended =
-        DateTime.now().add(Duration(days: 7)).millisecondsSinceEpoch;
+    var miliExtended = DateTime.now()
+        .add(Duration(days: _upcomingBillPeriod))
+        .millisecondsSinceEpoch;
     var list = _bills
         .where((bill) =>
             ((bill.dueOn.millisecondsSinceEpoch >= miliNow) ||
@@ -86,7 +104,8 @@ mixin BillsState on Model {
 
   /// Gets all `Bill`s that are due on the specified date.
   List<Bill> getBillsByDate(DateTime date) {
-    var list = _bills.where((bill) => utilities.sameDate(bill.dueOn, date)).toList();
+    var list =
+        _bills.where((bill) => utilities.sameDate(bill.dueOn, date)).toList();
     return list;
   }
 
@@ -102,6 +121,13 @@ mixin BillsState on Model {
       _bills.add(bill);
       notifyListeners();
     });
+  }
+
+  /// Changes the upcoming bills period of the app.
+  void changeUpcomingBillPeriod(int period) {
+    _upcomingBillPeriod = period;
+    _preferences.setInt("upcomingBillPeriod", period);
+    notifyListeners();
   }
 
   /// Adds multiple `Bill`s to the database and updates the collection.

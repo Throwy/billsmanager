@@ -1,4 +1,5 @@
 import 'package:billsmanager/models/SettingsItem.dart';
+import 'package:billsmanager/pages/settings/BillsSettingsPage.dart';
 import 'package:billsmanager/pages/settings/ThemeSettingsPage.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +7,8 @@ class SettingsPage extends StatelessWidget {
   final TextStyle _style = TextStyle(fontSize: 22.0);
 
   final List<SettingsItem> _settingsItems = [
-    new SettingsItem("Theme", new ThemeSettingsPage())
+    new SettingsItem("Theme", new ThemeSettingsPage()),
+    new SettingsItem("Bills", new BillsSettingsPage()),
   ];
 
   @override
