@@ -96,7 +96,7 @@ mixin ThemeState on Model {
 
   void changeAccentColor(Color color) {
     _accentColor = color;
-    _preferences.setInt("accentColor", color.value);
+    _preferences.setInt("accentColor", _accentColor.value);
     notifyListeners();
   }
 
@@ -106,6 +106,11 @@ mixin ThemeState on Model {
     _primaryColorDark = Colors.deepPurple[700];
     _primaryColorLight = Colors.deepPurple[200];
     _accentColor = Colors.tealAccent;
+    _preferences.setInt("brightness", _brightness.index);
+    _preferences.setInt("primaryColor", _primaryColor.value);
+    _preferences.setInt("primaryColorDark", _primaryColorDark.value);
+    _preferences.setInt("primaryColorLight", _primaryColorLight.value);
+    _preferences.setInt("accentColor", _accentColor.value);
     notifyListeners();
   }
 
