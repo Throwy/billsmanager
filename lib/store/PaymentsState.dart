@@ -68,6 +68,10 @@ mixin PaymentsState on Model {
     });
   }
 
+  Future<void> deletePaymentsForBill(int billId) async {
+    
+  }
+
   /// Helper function to call from anywhere in the tree.
   static PaymentsState of(BuildContext context) =>
       ScopedModel.of<PaymentsState>(context);

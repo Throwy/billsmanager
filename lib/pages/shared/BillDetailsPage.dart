@@ -62,7 +62,16 @@ class BillDetailsPageState extends State<BillDetailsPage> {
                       ),
                       AlertAction(
                         text: "DELETE",
-                        onPressed: () {},
+                        onPressed: () {
+                          ScopedModel.of<AppState>(context)
+                              .paymentsState
+                              .deletePaymentsForBill(widget.bill.id)
+                              .then((value) {
+                            // ScopedModel.of<AppState>(context)
+                            //     .billsState
+                            //     .deleteBill(widget.bill.id);
+                          });
+                        },
                         automaticallyPopNavigation: true,
                         isDestructiveAction: true,
                       ),
