@@ -70,7 +70,17 @@ mixin PaymentsState on Model {
     });
   }
 
-  Future<void> deletePaymentsForBill(int billId) async {}
+  /// Deletes all `Payment`s for then given billId.
+  Future<void> deletePaymentsForBill(int billId) async {
+    await _database.transaction((trans) async {
+      var filter = Filter.equals("bill_id", billId);
+      var finder = Finder(filter: filter);
+      return await _paymentsStore.delete(trans, finder: finder);
+    }).then((res) {
+      _payments.removeWhere((p) => p.billId == billId);
+      notifyListeners();
+    });
+  }
 
   /// Helper function to call from anywhere in the tree.
   static PaymentsState of(BuildContext context) =>

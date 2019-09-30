@@ -151,6 +151,17 @@ mixin BillsState on Model {
     });
   }
 
+  Future<void> setBillUnpaid(int billId) async {
+    var record = _billsStore.record(billId);
+
+    await _database.transaction((trans) async {
+      await record.update(trans, {'paid': 0});
+    }).then((res) {
+      _bills.firstWhere((b) => b.id == billId).paid = false;
+      notifyListeners();
+    });
+  }
+
   /// Deletes a single `Bill` from the database and updates the collection.
   Future<void> deleteBill(int billId) async {
     var record = _billsStore.record(billId);

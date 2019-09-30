@@ -30,6 +30,16 @@ class BillDetailsPageState extends State<BillDetailsPage> {
     super.initState();
   }
 
+  // _selectMenuChoice(String c) {
+  //   switch (c) {
+  //     case 'markunpaid':
+  //       print(c);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppState>(
@@ -67,9 +77,11 @@ class BillDetailsPageState extends State<BillDetailsPage> {
                               .paymentsState
                               .deletePaymentsForBill(widget.bill.id)
                               .then((value) {
-                            // ScopedModel.of<AppState>(context)
-                            //     .billsState
-                            //     .deleteBill(widget.bill.id);
+                            ScopedModel.of<AppState>(context)
+                                .billsState
+                                .deleteBill(widget.bill.id);
+                          }).then((res) {
+                            Navigator.of(context).pop();
                           });
                         },
                         automaticallyPopNavigation: true,
@@ -79,6 +91,16 @@ class BillDetailsPageState extends State<BillDetailsPage> {
                   );
                 },
               ),
+              // PopupMenuButton(
+              //   icon: Icon(Icons.more_vert),
+              //   onSelected: _selectMenuChoice,
+              //   itemBuilder: (context) => [
+              //     PopupMenuItem(
+              //       value: 'markunpaid',
+              //       child: Text("Mark unpaid"),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
           body: Container(
@@ -259,7 +281,16 @@ class BillDetailsPageState extends State<BillDetailsPage> {
                                 onPressed: () {
                                   ScopedModel.of<AppState>(context)
                                       .paymentsState
-                                      .deletePayment(p.id);
+                                      .deletePayment(p.id)
+                                      .then((res) {
+                                    if (_paymentsSum -
+                                            double.parse(p.amountPaid) <
+                                        double.parse(widget.bill.amountDue)) {
+                                      ScopedModel.of<AppState>(context)
+                                          .billsState
+                                          .setBillUnpaid(widget.bill.id);
+                                    }
+                                  });
                                 },
                                 automaticallyPopNavigation: true,
                                 isDestructiveAction: true,
