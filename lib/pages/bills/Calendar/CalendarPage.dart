@@ -142,7 +142,7 @@ class CalendarPageState extends State<CalendarPage>
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
           shape: BoxShape.rectangle,
-          color: Theme.of(context).primaryColorLight),
+          color: Theme.of(context).primaryColorDark),
       width: 14.0,
       height: 14.0,
       child: Center(
