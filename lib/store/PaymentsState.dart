@@ -13,14 +13,19 @@ mixin PaymentsState on Model {
   Database _database;
   List<Payment> _payments;
 
+  // store name
+  static const String PAYMENTS_STORE_NAME = "payments";
+
+  // create the store
+  final _paymentsStore = intMapStoreFactory.store(PAYMENTS_STORE_NAME);
+
   /// Intializes the `PaymentsState` class.
   ///
   /// This should only be called once, ie. when the app is being opened.
   Future<PaymentsState> initPaymentsState(Database database) async {
     _database = database;
 
-    var store = intMapStoreFactory.store('payments');
-    var res = await store.find(_database, finder: Finder());
+    var res = await _paymentsStore.find(_database, finder: Finder());
     _payments = res.isNotEmpty
         ? res.map((payment) => Payment.fromMap(payment)).toList()
         : [];
@@ -43,11 +48,9 @@ mixin PaymentsState on Model {
 
   /// Adds one `Payment` to the database and updates the collection.
   Future<void> addPayment(Payment payment) async {
-    var store = intMapStoreFactory.store('payments');
-    
     int paymentKey;
     await _database.transaction((trans) async {
-      paymentKey = await store.add(trans, payment.toMap());
+      paymentKey = await _paymentsStore.add(trans, payment.toMap());
     }).then((res) {
       payment.id = paymentKey;
       _payments.add(payment);
@@ -57,8 +60,7 @@ mixin PaymentsState on Model {
 
   /// Deletes one `Payment` from the database and updates the collection.
   Future<void> deletePayment(int paymentId) async {
-    var store = intMapStoreFactory.store('payments');
-    var record = store.record(paymentId);
+    var record = _paymentsStore.record(paymentId);
 
     await _database.transaction((trans) async {
       await record.delete(trans);
@@ -68,9 +70,7 @@ mixin PaymentsState on Model {
     });
   }
 
-  Future<void> deletePaymentsForBill(int billId) async {
-    
-  }
+  Future<void> deletePaymentsForBill(int billId) async {}
 
   /// Helper function to call from anywhere in the tree.
   static PaymentsState of(BuildContext context) =>

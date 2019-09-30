@@ -17,6 +17,12 @@ mixin BillsState on Model {
   Database _database;
   List<Bill> _bills;
 
+  // store name
+  static const String BILLS_STORE_NAME = "bills";
+
+  // Create the store
+  final _billsStore = intMapStoreFactory.store(BILLS_STORE_NAME);
+
   /// Initializes the `BillsState` class.
   ///
   /// This should only be called once, ie. when the app is being opened.
@@ -35,8 +41,7 @@ mixin BillsState on Model {
       _upcomingBillPeriod = 7;
     }
 
-    var store = intMapStoreFactory.store('bills');
-    var res = await store.find(_database, finder: Finder());
+    var res = await _billsStore.find(_database, finder: Finder());
 
     _bills =
         res.isNotEmpty ? res.map((bill) => Bill.fromMap(bill)).toList() : [];
@@ -111,11 +116,9 @@ mixin BillsState on Model {
 
   /// Adds one `Bill` to the database and updates the collection.
   Future<void> addBill(Bill bill) async {
-    var store = intMapStoreFactory.store("bills");
-
     int billKey;
     await _database.transaction((trans) async {
-      billKey = await store.add(trans, bill.toMap());
+      billKey = await _billsStore.add(trans, bill.toMap());
     }).then((res) {
       bill.id = billKey;
       _bills.add(bill);
@@ -138,8 +141,7 @@ mixin BillsState on Model {
 
   /// Sets the value of paid to `true` for the specified `Bill` in the database.
   Future<void> setBillPaid(int billId) async {
-    var store = intMapStoreFactory.store('bills');
-    var record = store.record(billId);
+    var record = _billsStore.record(billId);
 
     await _database.transaction((trans) async {
       await record.update(trans, {'paid': 1});
@@ -151,8 +153,7 @@ mixin BillsState on Model {
 
   /// Deletes a single `Bill` from the database and updates the collection.
   Future<void> deleteBill(int billId) async {
-    var store = intMapStoreFactory.store('bills');
-    var record = store.record(billId);
+    var record = _billsStore.record(billId);
 
     await _database.transaction((trans) async {
       await record.delete(trans);
