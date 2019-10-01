@@ -1,6 +1,7 @@
 import 'package:billsmanager/helpers/utilities.dart' as utilities;
 import 'package:billsmanager/models/Bill.dart';
 import 'package:billsmanager/models/Payment.dart';
+import 'package:billsmanager/pages/entryforms/BillFormPage.dart';
 import 'package:billsmanager/store/AppState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
@@ -30,16 +31,6 @@ class BillDetailsPageState extends State<BillDetailsPage> {
     super.initState();
   }
 
-  // _selectMenuChoice(String c) {
-  //   switch (c) {
-  //     case 'markunpaid':
-  //       print(c);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppState>(
@@ -54,7 +45,16 @@ class BillDetailsPageState extends State<BillDetailsPage> {
             actions: <Widget>[
               IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) {
+                      return BillFormPage(
+                        title: "Edit Bill",
+                        bill: widget.bill,
+                      );
+                    },
+                  ));
+                },
               ),
               IconButton(
                 icon: Icon(Icons.delete),
@@ -91,16 +91,6 @@ class BillDetailsPageState extends State<BillDetailsPage> {
                   );
                 },
               ),
-              // PopupMenuButton(
-              //   icon: Icon(Icons.more_vert),
-              //   onSelected: _selectMenuChoice,
-              //   itemBuilder: (context) => [
-              //     PopupMenuItem(
-              //       value: 'markunpaid',
-              //       child: Text("Mark unpaid"),
-              //     ),
-              //   ],
-              // ),
             ],
           ),
           body: Container(

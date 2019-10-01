@@ -9,20 +9,32 @@ import 'package:scoped_model/scoped_model.dart';
 
 class BillFormPage extends StatefulWidget {
   final String title;
+  final Bill bill;
 
-  const BillFormPage({Key key, @required this.title}) : super(key: key);
+  const BillFormPage({
+    Key key,
+    @required this.title,
+    this.bill,
+  }) : super(key: key);
 
   BillFormPageState createState() => new BillFormPageState();
 }
 
 class BillFormPageState extends State<BillFormPage> {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
-  Bill _newBill = new Bill();
+  Bill _billToEdit;
+  bool _editing = false;
 
   @override
   void initState() {
     super.initState();
-    _newBill.paid = false;
+    if (widget.bill != null) {
+      _billToEdit = widget.bill;
+      _editing = true;
+    } else {
+      _billToEdit = new Bill();
+      _billToEdit.paid = false;
+    }
   }
 
   @override
@@ -34,8 +46,16 @@ class BillFormPageState extends State<BillFormPage> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () {
-              if(_formKey.currentState.validate()) {
-                ScopedModel.of<AppState>(context).billsState.addBill(_newBill);
+              if (_formKey.currentState.validate()) {
+                if (_editing) {
+                  ScopedModel.of<AppState>(context)
+                      .billsState
+                      .updateBill(_billToEdit);
+                } else {
+                  ScopedModel.of<AppState>(context)
+                      .billsState
+                      .addBill(_billToEdit);
+                }
                 Navigator.pop(context);
               }
             },
@@ -51,6 +71,7 @@ class BillFormPageState extends State<BillFormPage> {
               children: <Widget>[
                 FormBuilderDropdown(
                   attribute: "billType",
+                  initialValue: _billToEdit.billType,
                   decoration: InputDecoration(
                     labelText: "Bill Type",
                   ),
@@ -67,11 +88,12 @@ class BillFormPageState extends State<BillFormPage> {
                       )
                       .toList(),
                   onChanged: (val) => setState(() {
-                    _newBill.billType = val;
+                    _billToEdit.billType = val;
                   }),
                 ),
                 FormBuilderTextField(
                   attribute: "title",
+                  initialValue: _billToEdit.title,
                   decoration: InputDecoration(
                     labelText: "Title",
                   ),
@@ -80,11 +102,12 @@ class BillFormPageState extends State<BillFormPage> {
                     FormBuilderValidators.maxLength(30),
                   ],
                   onChanged: (val) => setState(() {
-                    _newBill.title = val;
+                    _billToEdit.title = val;
                   }),
                 ),
                 FormBuilderTextField(
                   attribute: "amountDue",
+                  initialValue: _billToEdit.amountDue,
                   validators: [
                     FormBuilderValidators.required(),
                     FormBuilderValidators.numeric(),
@@ -94,11 +117,12 @@ class BillFormPageState extends State<BillFormPage> {
                     labelText: "Amount Due",
                   ),
                   onChanged: (val) => setState(() {
-                    _newBill.amountDue = val;
+                    _billToEdit.amountDue = val;
                   }),
                 ),
                 FormBuilderDateTimePicker(
                   attribute: "dueOn",
+                  initialValue: _billToEdit.dueOn,
                   inputType: InputType.date,
                   validators: [
                     FormBuilderValidators.required(),
@@ -108,11 +132,12 @@ class BillFormPageState extends State<BillFormPage> {
                     labelText: "Due On",
                   ),
                   onChanged: (val) => setState(() {
-                    _newBill.dueOn = val;
+                    _billToEdit.dueOn = val;
                   }),
                 ),
                 FormBuilderDropdown(
                   attribute: "reminderPeriod",
+                  initialValue: _billToEdit.reminderPeriod,
                   hint: Text("Select Reminder Period"),
                   decoration: InputDecoration(
                     labelText: "Reminder",
@@ -120,7 +145,6 @@ class BillFormPageState extends State<BillFormPage> {
                   validators: [
                     FormBuilderValidators.required(),
                   ],
-                  //initialValue: "5 days before",
                   items: DropDownItems.reminderPeriods
                       .map(
                         (item) => DropdownMenuItem(
@@ -130,12 +154,13 @@ class BillFormPageState extends State<BillFormPage> {
                       )
                       .toList(),
                   onChanged: (val) => setState(() {
-                    _newBill.reminder = val == "No Reminder" ? false : true;
-                    _newBill.reminderPeriod = val;
+                    _billToEdit.reminder = val == "No Reminder" ? false : true;
+                    _billToEdit.reminderPeriod = val;
                   }),
                 ),
                 FormBuilderDropdown(
                   attribute: "repeatPeriod",
+                  initialValue: _billToEdit.repeatPeriod,
                   hint: Text("Select repeat period"),
                   decoration: InputDecoration(
                     labelText: "Repeat",
@@ -143,7 +168,6 @@ class BillFormPageState extends State<BillFormPage> {
                   validators: [
                     FormBuilderValidators.required(),
                   ],
-                  //initialValue: "Does not repeat",
                   items: DropDownItems.repeatPeriods
                       .map(
                         (item) => DropdownMenuItem(
@@ -153,18 +177,20 @@ class BillFormPageState extends State<BillFormPage> {
                       )
                       .toList(),
                   onChanged: (val) => setState(() {
-                    _newBill.repeats = val == "Does not repeat" ? false : true;
-                    _newBill.repeatPeriod = val;
+                    _billToEdit.repeats =
+                        val == "Does not repeat" ? false : true;
+                    _billToEdit.repeatPeriod = val;
                   }),
                 ),
                 FormBuilderTextField(
                   attribute: "notes",
+                  initialValue: _billToEdit.notes,
                   decoration: InputDecoration(
                     labelText: "Notes",
                   ),
                   maxLines: 4,
                   onChanged: (val) => setState(() {
-                    _newBill.notes = val;
+                    _billToEdit.notes = val;
                   }),
                 ),
               ],

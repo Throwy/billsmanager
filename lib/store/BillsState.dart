@@ -126,6 +126,30 @@ mixin BillsState on Model {
     });
   }
 
+  /// Updates the fields of the given `Bill`.
+  Future<void> updateBill(Bill bill) async {
+    var record = _billsStore.record(bill.id);
+
+    await _database.transaction((trans) async {
+      await record.update(trans, bill.toMap());
+      return await record.getSnapshot(trans);
+    }).then((res) async {
+      var index = _bills.indexOf(bill);
+      var updated = Bill.fromMap(res);
+      _bills[index].amountDue = updated.amountDue;
+      _bills[index].billType = updated.billType;
+      _bills[index].dueOn = updated.dueOn;
+      _bills[index].notes = updated.notes;
+      _bills[index].paid = updated.paid;
+      _bills[index].reminder = updated.reminder;
+      _bills[index].reminderPeriod = updated.reminderPeriod;
+      _bills[index].repeatPeriod = updated.repeatPeriod;
+      _bills[index].repeats = updated.repeats;
+      _bills[index].title = updated.title;
+      notifyListeners();
+    });
+  }
+
   /// Changes the upcoming bills period of the app.
   void changeUpcomingBillPeriod(int period) {
     _upcomingBillPeriod = period;

@@ -47,9 +47,9 @@ class Bill {
       "notes": notes,
       "paid": paid == true ? 1 : 0
     };
-    if (id != null) {
-      map["id"] = id;
-    }
+    // if (id != null) {
+    //   map["id"] = id;
+    // }
     return map;
   }
 
