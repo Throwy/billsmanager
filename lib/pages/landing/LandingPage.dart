@@ -165,44 +165,54 @@ class LandingPage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.attach_money),
-                  title: Text("Add Bill"),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BillFormPage(
-                          title: "Add Bill",
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.payment),
-                  title: Text("Add Payment"),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CreatePaymentPage(),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            );
-          },
-        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return BillFormPage(
+                title: "Add Bill",
+              );
+            }),
+          );
+        },
+        // onPressed: () => showModalBottomSheet(
+        //   context: context,
+        //   builder: (BuildContext context) {
+        //     return Column(
+        //       mainAxisSize: MainAxisSize.min,
+        //       children: <Widget>[
+        //         ListTile(
+        //           leading: Icon(Icons.attach_money),
+        //           title: Text("Add Bill"),
+        //           onTap: () {
+        //             Navigator.pop(context);
+        //             Navigator.push(
+        //               context,
+        //               MaterialPageRoute(
+        //                 builder: (context) => BillFormPage(
+        //                   title: "Add Bill",
+        //                 ),
+        //               ),
+        //             );
+        //           },
+        //         ),
+        //         ListTile(
+        //           leading: Icon(Icons.payment),
+        //           title: Text("Add Payment"),
+        //           onTap: () {
+        //             Navigator.pop(context);
+        //             Navigator.push(
+        //               context,
+        //               MaterialPageRoute(
+        //                 builder: (context) => CreatePaymentPage(),
+        //               ),
+        //             );
+        //           },
+        //         ),
+        //       ],
+        //     );
+        //   },
+        // ),
         tooltip: 'Create Entry',
         child: Icon(Icons.add),
       ),
