@@ -49,7 +49,7 @@ class ThemeSettingsPage extends StatelessWidget {
                     subtitle: Text("Set the primary color of the app."),
                     trailing: CircleColor(
                       color: model.themeState.primaryColor,
-                      circleSize: 30.0,
+                      circleSize: 50.0,
                       onColorChoose: () {
                         showDialog(
                           context: context,
@@ -80,7 +80,7 @@ class ThemeSettingsPage extends StatelessWidget {
                     subtitle: Text("Set the accent color of the app."),
                     trailing: CircleColor(
                       color: model.themeState.accentColor,
-                      circleSize: 30.0,
+                      circleSize: 50.0,
                       onColorChoose: () {
                         showDialog(
                             context: context,
